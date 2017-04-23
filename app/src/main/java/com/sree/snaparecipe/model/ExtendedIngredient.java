@@ -26,7 +26,7 @@ public class ExtendedIngredient implements Parcelable
     private String name;
     @SerializedName("amount")
     @Expose
-    private Integer amount;
+    private Float amount;
     @SerializedName("unit")
     @Expose
     private String unit;
@@ -54,7 +54,7 @@ public class ExtendedIngredient implements Parcelable
             instance.aisle = ((String) in.readValue((String.class.getClassLoader())));
             instance.image = ((String) in.readValue((String.class.getClassLoader())));
             instance.name = ((String) in.readValue((String.class.getClassLoader())));
-            instance.amount = ((Integer) in.readValue((Integer.class.getClassLoader())));
+            instance.amount = ((Float) in.readValue((Float.class.getClassLoader())));
             instance.unit = ((String) in.readValue((String.class.getClassLoader())));
             instance.unitShort = ((String) in.readValue((String.class.getClassLoader())));
             instance.unitLong = ((String) in.readValue((String.class.getClassLoader())));
@@ -102,11 +102,11 @@ public class ExtendedIngredient implements Parcelable
         this.name = name;
     }
 
-    public Integer getAmount() {
+    public Float getAmount() {
         return amount;
     }
 
-    public void setAmount(Integer amount) {
+    public void setAmount(Float amount) {
         this.amount = amount;
     }
 

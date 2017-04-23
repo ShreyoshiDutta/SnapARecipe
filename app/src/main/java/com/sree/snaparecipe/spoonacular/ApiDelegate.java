@@ -5,6 +5,8 @@ import com.sree.snaparecipe.model.Recipe_;
 
 import java.util.List;
 
+import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -30,10 +32,22 @@ public class ApiDelegate {
 
     public  interface SpoonacularService {
         @GET("recipes/random")
-        Call<List<Recipe_>> listRandomRecipes(@Query("number") int count, @Header("Authorization") String token);
+        Call<Recipe> listRandomRecipes(@Query("number") int count, @Header("X-Mashape-Key") String token);
 
     }
-    public static final SpoonacularService spoonacularService = new Retrofit.Builder().baseUrl("https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/")
+    static OkHttpClient.Builder client = new OkHttpClient.Builder();
+    static {
+        HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY);
+        client.addInterceptor(loggingInterceptor);
+    }
+
+
+
+
+
+    public static final SpoonacularService spoonacularService = new Retrofit.Builder()
+            .baseUrl("https://spoonacular-recipe-food-nutrition-v1.p.mashape.com/")
+            .client(client.build())
             .addConverterFactory(GsonConverterFactory.create())
             .build().create(SpoonacularService.class);
     /*

@@ -407,4 +407,16 @@ public class Recipe_ implements Parcelable
         return  0;
     }
 
+    @Override
+    public String toString() {
+        return getTitle();
+    }
+
+    public Recipe_(String t){
+        this.title=t;
+    }
+
+    public  Recipe_(){
+        super();
+    }
 }

@@ -21,10 +21,10 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ListRecipes extends AppCompatActivity implements
-        AdapterView.OnItemLongClickListener , AdapterView.OnItemClickListener , Callback<List<Recipe_>>{
+        AdapterView.OnItemLongClickListener , AdapterView.OnItemClickListener , Callback<Recipe>{
     private static final String TAG = "ListRecipes";
 
-    private List<Recipe> recipeList;
+    private List<Recipe_> recipeList;
 
     // Listview Adapter
     private ArrayAdapter adapter;
@@ -34,8 +34,10 @@ public class ListRecipes extends AppCompatActivity implements
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.v(TAG,"creting app listview");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_recipes);
+
 
         recipeList = intializeRecipes();
         adapter = new ArrayAdapter(this,R.layout.list_item,R.id.name,recipeList);
@@ -46,26 +48,33 @@ public class ListRecipes extends AppCompatActivity implements
         lv.setOnItemLongClickListener(this);
         lv.setOnItemClickListener(this);
     }
-    List<Recipe> intializeRecipes() {
-        List<Recipe> rtrn = new ArrayList<>();
-        spoonacularService.listRandomRecipes(4,"lIQwnxhTt8mshrspQjiOj9uYDVs5p1K8otZjsncetRKjGas2oN").enqueue(this);
+    List<Recipe_> intializeRecipes() {
+        List<Recipe_> rtrn = new ArrayList<>();
+        rtrn.add(new Recipe_("khichuri"));
+        Log.v(TAG,"Calling spponacular");
+        //spoonacularService.listRandomRecipes(4,"lIQwnxhTt8mshrspQjiOj9uYDVs5p1K8otZjsncetRKjGas2oN").enqueue(this);
         return rtrn;
     }
 
     @Override
-    public void onResponse(Call<List<Recipe_>> call, Response<List<Recipe_>> response) {
-        List<Recipe_> ms = response.body();
-        Log.v(TAG, "size=" + ms.size());
+    public void onResponse(Call<Recipe> call, Response<Recipe> response) {
+        Recipe ms = response.body();
+        Log.v(TAG, "size=" + ms.getRecipes().size());
 
-        for(Recipe_ m : ms){
+        for(Recipe_ m : ms.getRecipes()){
             Log.v(TAG,m.toString());
         }
+
+        recipeList=ms.getRecipes();
+        adapter.clear();
+        adapter.addAll(ms.getRecipes());
+        adapter.notifyDataSetChanged();
 
     }
 
     @Override
-    public void onFailure(Call<List<Recipe_>> call, Throwable t) {
-
+    public void onFailure(Call<Recipe> call, Throwable t) {
+        Log.e(TAG,t.getMessage());
     }
    /* List<Recipe> intializeRecipes(){
         List<Recipe> rtrn =  new ArrayList<>();
