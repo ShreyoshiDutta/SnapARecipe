@@ -17,6 +17,10 @@ public class Ingredients implements Parcelable {
         ingredients = new ArrayList<>();
     }
 
+    public Ingredients(List ii) {
+        ingredients = ii;
+    }
+
     public List<Ingredient> getIngredients() {
         return ingredients;
     }

@@ -1,6 +1,8 @@
 package com.sree.snaparecipe;
 
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -14,6 +16,7 @@ import android.util.Log;
 import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 
+import com.sree.snaparecipe.clarifai.ClarifaiDelegate;
 import com.sree.snaparecipe.model.clarifai.*;
 
 import java.io.File;
@@ -38,6 +41,8 @@ import clarifai2.dto.prediction.Concept;
 public class ImageCapture extends AppCompatActivity {
     // tagging for logs
     private static final String TAG = "ImageCapture";
+    private boolean isStubbed=true;
+
     // Save a file: path for use with ACTION_VIEW intents
     String mCurrentPhotoPath;
     static final int REQUEST_TAKE_PHOTO = 1;
@@ -50,6 +55,18 @@ public class ImageCapture extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image_capture);
+
+        setStubbedMode:{
+            try {
+                ApplicationInfo ai = getPackageManager().getApplicationInfo(this.getPackageName(), PackageManager.GET_META_DATA);
+                Bundle bundle = ai.metaData;
+                isStubbed = bundle.getBoolean("isStubbed");
+            } catch (PackageManager.NameNotFoundException e) {
+                Log.e(TAG, "Failed to load meta-data, NameNotFound: " + e.getMessage());
+            } catch (NullPointerException e) {
+                Log.e(TAG, "Failed to load meta-data, NullPointer: " + e.getMessage());
+            }
+        }
 
         mImageView = (ImageView) findViewById(R.id.imageView);
         ViewTreeObserver vto = mImageView.getViewTreeObserver();
@@ -103,35 +120,9 @@ public class ImageCapture extends AppCompatActivity {
 
                 @Override
                 protected Object doInBackground(Object[] params) {
-                    ClarifaiClient client = new ClarifaiBuilder("IG6pHH9ByfOSwyUARZ_aahkWsVGk6fPrRh5_WVRu", "9KShzT4Su6ibkb1eFsas7MrQO4nhzFDXtecbxMsK")
-                            //.client(new OkHttpClient()) // OPTIONAL. Allows customization of OkHttp by the user
-                            .buildSync(); // or use .build() to get a Future<ClarifaiClient>
-                            // if a Client is registered as a default instance, it will be used
-                            // automatically, without the user having to keep it around as a field.
-                            // This can be omitted if you want to manually manage your instance
-                            //.registerAsDefaultInstance();
-                   /* ClarifaiResponse res = client.getDefaultModels().foodModel().predict()
-                            .withInputs(ClarifaiInput.forImage(ClarifaiImage.of(new File(mCurrentPhotoPath)))
-                            )
-                            .executeSync();*/
-
-                    PredictRequest<Concept> req =  client.getDefaultModels().foodModel().predict();
-                    ClarifaiResponse<List<ClarifaiOutput<Concept>>> res = req.withInputs(ClarifaiInput.forImage(ClarifaiImage.of(new File(mCurrentPhotoPath)))
-                    )
-                            .executeSync();
-
-                    res.get().get(0).data().get(0);
-
-                    for(Concept c : res.get().get(0).data()){
-                        Log.v(TAG,c.name()+" : "+c.value());
-                    }
-
-
-                    Log.v(TAG,res.getStatus().description());
-
                     Intent showIngredientView = new Intent(ImageCapture.this,ListIngredients.class);
 
-                    Ingredients detectedIngredients = parseConcepts(res.get().get(0).data());
+                    Ingredients detectedIngredients = ClarifaiDelegate.getDetectedIngredients(mCurrentPhotoPath,isStubbed);
                     showIngredientView.putExtra("Ingredients",detectedIngredients);
                     startActivity(showIngredientView);
 
@@ -148,16 +139,7 @@ public class ImageCapture extends AppCompatActivity {
         }
     }
 
-    private Ingredients parseConcepts(List<Concept> data) {
-        Ingredients rtrn = new Ingredients();
-        List<Ingredient> is = new ArrayList<>();
-        for(Concept c: data){
-            is.add(new Ingredient(c.name(),c.value()));
-        }
 
-        rtrn.setIngredients(is);
-        return rtrn;
-    }
 
 
     private File createImageFile() throws IOException {

@@ -34,6 +34,7 @@
                 android:resource="@xml/file_paths"></meta-data>
         </provider>
         <meta-data android:name="CLOUDINARY_URL" android:value="cloudinary://492815673726876:0IjSkNjIO0JwG1DbkmSHZx8qkws@dccxbk5g8"/>
+        <meta-data android:name="isStubbed" android:value="true"/>
     </application>
 
 </manifest>

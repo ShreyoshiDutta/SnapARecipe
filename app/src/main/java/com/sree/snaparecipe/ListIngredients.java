@@ -10,18 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import com.sree.snaparecipe.model.clarifai.*;
 
-import com.sree.snaparecipe.model.Recipe;
-import com.sree.snaparecipe.model.Recipe_;
-
-import java.util.ArrayList;
 import java.util.List;
-
-import clarifai2.dto.prediction.Concept;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
-import static com.sree.snaparecipe.spoonacular.ApiDelegate.spoonacularService;
 
 public class ListIngredients extends AppCompatActivity implements
         AdapterView.OnItemLongClickListener , AdapterView.OnItemClickListener {
@@ -45,7 +34,7 @@ public class ListIngredients extends AppCompatActivity implements
         Intent caller = getIntent();
         conceptList = ((Ingredients)caller.getParcelableExtra("Ingredients")).getIngredients();
 
-        adapter = new ArrayAdapter(this,R.layout.list_item,R.id.name, conceptList);
+        adapter = new ArrayAdapter(this,R.layout.list_item,R.id.recipeName, conceptList);
 
         lv = (ListView) findViewById(R.id.list_view);
         lv.setAdapter(adapter);
