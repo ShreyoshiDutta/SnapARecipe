@@ -1,5 +1,6 @@
 package com.sree.snaparecipe;
 
+import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.Parcel;
@@ -129,6 +130,11 @@ public class ListRecipes extends AppCompatActivity implements
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        /*Intent showRecipeDetailsView = new Intent(this,RecipeDetailsActivity.class);
+
+        //Monster aMonster = new Monster(0,"Groot",11,"Tree",80,900);
+        showRecipeDetailsView.putExtra("Recipe",recipeList.get(position));
+        startActivity(showRecipeDetailsView);*/
 
     }
 

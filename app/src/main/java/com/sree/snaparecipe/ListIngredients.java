@@ -16,7 +16,7 @@ public class ListIngredients extends AppCompatActivity implements
         AdapterView.OnItemLongClickListener , AdapterView.OnItemClickListener {
     private static final String TAG = "ListIngredients";
 
-    private List<Ingredient> conceptList;
+    private List<Ingredient> ingredientList;
 
     // Listview Adapter
     private ArrayAdapter adapter;
@@ -32,9 +32,9 @@ public class ListIngredients extends AppCompatActivity implements
 
 
         Intent caller = getIntent();
-        conceptList = ((Ingredients)caller.getParcelableExtra("Ingredients")).getIngredients();
+        ingredientList = ((Ingredients)caller.getParcelableExtra("Ingredients")).getIngredients();
 
-        adapter = new ArrayAdapter(this,R.layout.list_item,R.id.recipeName, conceptList);
+        adapter = new ArrayAdapter(this,R.layout.list_item,R.id.recipeName, ingredientList);
 
         lv = (ListView) findViewById(R.id.list_view);
         lv.setAdapter(adapter);

@@ -19,7 +19,8 @@ public class MainActivity extends AppCompatActivity {
         getRecipe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this,ListRecipes.class));
+                //startActivity(new Intent(MainActivity.this,ListRecipes.class));
+                startActivity(new Intent(MainActivity.this,RecipeListActivity.class));
 
             }
         });

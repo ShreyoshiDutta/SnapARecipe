@@ -4,6 +4,7 @@ package com.sree.snaparecipe.model;
 import java.util.List;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -11,7 +12,9 @@ import com.google.gson.annotations.SerializedName;
 //import org.apache.commons.lang.builder.ToStringBuilder;
 
 public class Recipe_ implements Parcelable
+
 {
+    private static final String TAG = "Recipe_";
 
     @SerializedName("vegetarian")
     @Expose
@@ -105,35 +108,42 @@ public class Recipe_ implements Parcelable
         })
         public Recipe_ createFromParcel(Parcel in) {
             Recipe_ instance = new Recipe_();
-            instance.vegetarian = ((Boolean) in.readValue((Boolean.class.getClassLoader())));
-            instance.vegan = ((Boolean) in.readValue((Boolean.class.getClassLoader())));
-            instance.glutenFree = ((Boolean) in.readValue((Boolean.class.getClassLoader())));
-            instance.dairyFree = ((Boolean) in.readValue((Boolean.class.getClassLoader())));
-            instance.veryHealthy = ((Boolean) in.readValue((Boolean.class.getClassLoader())));
-            instance.cheap = ((Boolean) in.readValue((Boolean.class.getClassLoader())));
-            instance.veryPopular = ((Boolean) in.readValue((Boolean.class.getClassLoader())));
-            instance.sustainable = ((Boolean) in.readValue((Boolean.class.getClassLoader())));
-            instance.weightWatcherSmartPoints = ((Integer) in.readValue((Integer.class.getClassLoader())));
-            instance.gaps = ((String) in.readValue((String.class.getClassLoader())));
-            instance.lowFodmap = ((Boolean) in.readValue((Boolean.class.getClassLoader())));
-            instance.ketogenic = ((Boolean) in.readValue((Boolean.class.getClassLoader())));
-            instance.whole30 = ((Boolean) in.readValue((Boolean.class.getClassLoader())));
-            instance.servings = ((Integer) in.readValue((Integer.class.getClassLoader())));
-            instance.preparationMinutes = ((Integer) in.readValue((Integer.class.getClassLoader())));
-            instance.cookingMinutes = ((Integer) in.readValue((Integer.class.getClassLoader())));
-            instance.sourceUrl = ((String) in.readValue((String.class.getClassLoader())));
-            instance.spoonacularSourceUrl = ((String) in.readValue((String.class.getClassLoader())));
-            instance.aggregateLikes = ((Integer) in.readValue((Integer.class.getClassLoader())));
-            instance.creditText = ((String) in.readValue((String.class.getClassLoader())));
-            instance.sourceName = ((String) in.readValue((String.class.getClassLoader())));
-            in.readList(instance.extendedIngredients, (com.sree.snaparecipe.model.ExtendedIngredient.class.getClassLoader()));
-            instance.id = ((Integer) in.readValue((Integer.class.getClassLoader())));
-            instance.title = ((String) in.readValue((String.class.getClassLoader())));
-            instance.readyInMinutes = ((Integer) in.readValue((Integer.class.getClassLoader())));
-            instance.image = ((String) in.readValue((String.class.getClassLoader())));
-            instance.imageType = ((String) in.readValue((String.class.getClassLoader())));
-            instance.instructions = ((String) in.readValue((String.class.getClassLoader())));
-            return instance;
+            try {
+                instance.title = ((String) in.readValue((String.class.getClassLoader())));
+                instance.readyInMinutes = ((Integer) in.readValue((Integer.class.getClassLoader())));
+                instance.image = ((String) in.readValue((String.class.getClassLoader())));
+                instance.imageType = ((String) in.readValue((String.class.getClassLoader())));
+                instance.instructions = ((String) in.readValue((String.class.getClassLoader())));
+                instance.vegetarian = ((Boolean) in.readValue((Boolean.class.getClassLoader())));
+                instance.vegan = ((Boolean) in.readValue((Boolean.class.getClassLoader())));
+                instance.glutenFree = ((Boolean) in.readValue((Boolean.class.getClassLoader())));
+                instance.dairyFree = ((Boolean) in.readValue((Boolean.class.getClassLoader())));
+                instance.veryHealthy = ((Boolean) in.readValue((Boolean.class.getClassLoader())));
+                instance.cheap = ((Boolean) in.readValue((Boolean.class.getClassLoader())));
+                instance.veryPopular = ((Boolean) in.readValue((Boolean.class.getClassLoader())));
+                instance.sustainable = ((Boolean) in.readValue((Boolean.class.getClassLoader())));
+                instance.weightWatcherSmartPoints = ((Integer) in.readValue((Integer.class.getClassLoader())));
+                instance.gaps = ((String) in.readValue((String.class.getClassLoader())));
+                instance.lowFodmap = ((Boolean) in.readValue((Boolean.class.getClassLoader())));
+                instance.ketogenic = ((Boolean) in.readValue((Boolean.class.getClassLoader())));
+                instance.whole30 = ((Boolean) in.readValue((Boolean.class.getClassLoader())));
+                instance.servings = ((Integer) in.readValue((Integer.class.getClassLoader())));
+                instance.preparationMinutes = ((Integer) in.readValue((Integer.class.getClassLoader())));
+                instance.cookingMinutes = ((Integer) in.readValue((Integer.class.getClassLoader())));
+                instance.sourceUrl = ((String) in.readValue((String.class.getClassLoader())));
+                instance.spoonacularSourceUrl = ((String) in.readValue((String.class.getClassLoader())));
+                instance.aggregateLikes = ((Integer) in.readValue((Integer.class.getClassLoader())));
+                instance.creditText = ((String) in.readValue((String.class.getClassLoader())));
+                instance.sourceName = ((String) in.readValue((String.class.getClassLoader())));
+                in.readList(instance.extendedIngredients, (com.sree.snaparecipe.model.ExtendedIngredient.class.getClassLoader()));
+                instance.id = ((Integer) in.readValue((Integer.class.getClassLoader())));
+
+            }catch (Exception e){
+                Log.e(TAG,e.getMessage());
+            }
+            finally {
+                return instance;
+            }
         }
 
         public Recipe_[] newArray(int size) {

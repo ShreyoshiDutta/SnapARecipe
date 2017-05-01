@@ -38,16 +38,16 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     // https://mvnrepository.com/artifact/org.apache.commons/commons-lang3
-    compile 'org.apache.commons:commons-lang3:3.0'
     // https://mvnrepository.com/artifact/com.cloudinary/cloudinary
     //compile group: 'com.cloudinary', name: 'cloudinary', version: '1.0.2'
     // https://mvnrepository.com/artifact/com.cloudinary/cloudinary-taglib
     //   compile group: 'com.cloudinary', name: 'cloudinary-taglib', version: '1.0.14'
     // https://mvnrepository.com/artifact/com.cloudinary/cloudinary-core
-    compile 'com.cloudinary:cloudinary-android:1.9.1'
     // https://mvnrepository.com/artifact/com.cloudinary/cloudinary-http44
     //    compile group: 'com.cloudinary', name: 'cloudinary-http44', version: '1.9.1'
     // https://mvnrepository.com/artifact/com.clarifai.clarifai-api2/core
+    compile 'org.apache.commons:commons-lang3:3.0'
+    compile 'com.cloudinary:cloudinary-android:1.9.1'
     compile 'com.clarifai.clarifai-api2:core:2.0.2'
     compile 'org.apache.httpcomponents:httpclient-android:4.3.5.1'
     compile 'com.android.support:appcompat-v7:25.3.0'
@@ -55,5 +55,8 @@ dependencies {
     compile 'com.squareup.retrofit2:retrofit:2.2.0'
     compile 'com.squareup.retrofit2:converter-gson:2.2.0'
     compile 'com.squareup.okhttp3:logging-interceptor:3.6.0'
+    compile 'com.android.support:support-v4:25.3.1'
+    compile 'com.android.support:recyclerview-v7:25.3.1'
+    compile 'com.android.support:design:25.3.1'
     testCompile 'junit:junit:4.12'
 }

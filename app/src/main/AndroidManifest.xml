@@ -20,9 +20,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ListRecipes"></activity>
-        <activity android:name=".ListIngredients"></activity>
-        <activity android:name=".ImageCapture"></activity>
+        <activity android:name=".ListRecipes" />
+        <activity android:name=".ListIngredients" />
+        <activity android:name=".ImageCapture" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"
@@ -31,10 +31,32 @@
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths"></meta-data>
+                android:resource="@xml/file_paths" />
         </provider>
-        <meta-data android:name="CLOUDINARY_URL" android:value="cloudinary://492815673726876:0IjSkNjIO0JwG1DbkmSHZx8qkws@dccxbk5g8"/>
-        <meta-data android:name="isStubbed" android:value="true"/>
+
+        <meta-data
+            android:name="CLOUDINARY_URL"
+            android:value="cloudinary://492815673726876:0IjSkNjIO0JwG1DbkmSHZx8qkws@dccxbk5g8" />
+        <meta-data
+            android:name="isStubbed"
+            android:value="true" />
+
+        <activity
+            android:name=".RecipeListActivity"
+            android:label="@string/title_recipe_list"
+            android:theme="@style/AppTheme.NoActionBar">
+
+
+        </activity>
+        <activity
+            android:name=".RecipeDetailActivity"
+            android:label="@string/title_recipe_detail"
+            android:parentActivityName=".RecipeListActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.sree.snaparecipe.RecipeListActivity" />
+        </activity>
     </application>
 
 </manifest>

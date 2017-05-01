@@ -6,6 +6,7 @@ import android.util.Log;
 import com.sree.snaparecipe.ListRecipes;
 import com.sree.snaparecipe.model.Recipe;
 import com.sree.snaparecipe.model.Recipe_;
+import com.sree.snaparecipe.RecipeListActivity;
 
 import java.util.List;
 
@@ -63,6 +64,35 @@ public class SpoonacularDelegate {
         }
 
     }
+
+    public static void requestRecipies(final RecipeListActivity callback, boolean isStubbed){
+        if (isStubbed){
+            Log.d(TAG,"using stubbed");
+            new Thread(
+                    new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                Thread.sleep(1000l);
+                            } catch (InterruptedException e) {
+                                Log.e(TAG,e.getMessage());
+                            }
+                            callback.runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    callback.onResponse(null,Response.success(new Recipe(null)));
+                                }
+                            });
+
+                        }
+                    }).start();
+            //callback.onResponse(null,Response.success(new Recipe(null)));
+        }else{
+            spoonacularService.listRandomRecipes(4,"lIQwnxhTt8mshrspQjiOj9uYDVs5p1K8otZjsncetRKjGas2oN").enqueue(callback);
+        }
+
+    }
+
     public  interface SpoonacularService {
         @GET("recipes/random")
         Call<Recipe> listRandomRecipes(@Query("number") int count, @Header("X-Mashape-Key") String token);
