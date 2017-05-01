@@ -155,7 +155,7 @@ public class RecipeListActivity extends AppCompatActivity implements Callback<Re
         @Override
         public void onBindViewHolder(final ViewHolder holder, int position) {
 
-            Recipe_ currentRecipe = holder.mItem = mValues.get(position);
+            final Recipe_ currentRecipe = holder.mItem = mValues.get(position);
             Log.v(TAG,"current recipe : "+currentRecipe.toString());
             holder.mIdView.setText(currentRecipe.getTitle());
             holder.mContentView.setText(currentRecipe.getVegan()==true?"Vegan":currentRecipe.getVegetarian()==true?"Vegetarian":"");
@@ -174,8 +174,9 @@ public class RecipeListActivity extends AppCompatActivity implements Callback<Re
                     } else {
                         Context context = v.getContext();
                         Intent intent = new Intent(context, RecipeDetailActivity.class);
-                        intent.putExtra(RecipeDetailFragment.ARG_ITEM_ID, holder.mItem);
-
+                        intent.putExtra(RecipeDetailFragment.ARG_ITEM_ID, currentRecipe);
+                        //Recipe_.CREATOR.createFromParcel(currentRecipe.);
+                        Log.d(TAG,holder.mItem.toString());
                         context.startActivity(intent);
                     }
                 }

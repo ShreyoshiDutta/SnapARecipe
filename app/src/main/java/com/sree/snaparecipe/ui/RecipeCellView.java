@@ -13,6 +13,8 @@ import android.widget.TextView;
 import com.sree.snaparecipe.R;
 import com.sree.snaparecipe.model.Recipe_;
 
+import android.net.Uri;
+import java.net.URISyntaxException;
 import java.util.List;
 
 /**
@@ -55,9 +57,15 @@ public class RecipeCellView extends ArrayAdapter<Recipe_> {
         textT.setText(Integer.toString(currentRecipe.getReadyInMinutes()));
 
 
-        /*ImageView img = (ImageView) vi.findViewById(R.id.recipeImage);
-        img.setImageURI();
-        *///text.setText(data.get(position).getTitle());
+        ImageView img = (ImageView) vi.findViewById(R.id.recipeImage);
+
+            img.setImageURI(Uri.parse(currentRecipe.getImage()));
+
+        img.setContentDescription(currentRecipe.getImage());
+
+
+
+
         return vi;
     }
 

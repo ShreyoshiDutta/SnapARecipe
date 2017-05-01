@@ -1,5 +1,6 @@
 package com.sree.snaparecipe;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -9,9 +10,12 @@ import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.sree.snaparecipe.model.Recipe_;
@@ -24,6 +28,10 @@ import com.sree.snaparecipe.model.Recipe_;
  * in a {@link RecipeListActivity}.
  */
 public class RecipeDetailActivity extends AppCompatActivity {
+
+    private  static String TAG = "RecipeDetailActivity";
+
+    private Recipe_ mItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,19 +49,19 @@ public class RecipeDetailActivity extends AppCompatActivity {
             }
         });
 
+        mItem = (Recipe_) getIntent().getExtras().getParcelable(RecipeDetailFragment.ARG_ITEM_ID);
+        Log.d(TAG,mItem.getClass().getCanonicalName()+": "+mItem.getTitle());
 
-        {
+       /* {
+            View nsv = findViewById(R.id.recipe_detail_container);
+            View rootView = getLayoutInflater().inflate(R.layout.recipe_detail,(ViewGroup) nsv);
 
-            NestedScrollView nsv = (NestedScrollView) findViewById(R.id.recipe_detail_container);
-            View rootView = getLayoutInflater().inflate(R.layout.recipe_detail,null);
-
-            Recipe_ mItem = getIntent().getParcelableExtra(RecipeDetailFragment.ARG_ITEM_ID);
+            // Show the dummy content as text in a TextView.
             if (mItem != null) {
-                ((TextView) rootView.findViewById(R.id.recipe_detail)).setText(mItem.getInstructions());
+                ((TextView) findViewById(R.id.recipe_detail)).setText(mItem.getInstructions());
             }
-            nsv.addView(rootView);
-        }
-
+            ((ViewGroup) nsv).addView(rootView);
+        }*/
         // Show the Up button in the action bar.
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
@@ -69,7 +77,7 @@ public class RecipeDetailActivity extends AppCompatActivity {
         //
         // http://developer.android.com/guide/components/fragments.html
         //
-        if (savedInstanceState == null) {
+       /* if (savedInstanceState == null)*/ {
             // Create the detail fragment and add it to the activity
             // using a fragment transaction.
             Bundle arguments = new Bundle();
@@ -99,4 +107,17 @@ public class RecipeDetailActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+    /*@Override
+    public View onCreateView(String name, Context context, AttributeSet attrs) {
+        View nsv = findViewById(R.id.recipe_detail_container);
+        View rootView = getLayoutInflater().inflate(R.layout.recipe_detail,(ViewGroup) nsv);
+
+        // Show the dummy content as text in a TextView.
+        if (mItem != null) {
+            ((TextView) rootView.findViewById(R.id.recipe_detail)).setText(mItem.getInstructions());
+        }
+
+        return rootView;
+    }*/
 }

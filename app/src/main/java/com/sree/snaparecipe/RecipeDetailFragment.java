@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,6 +54,7 @@ public class RecipeDetailFragment extends Fragment {
                 appBarLayout.setTitle(mItem.getTitle());
             }
         }
+        Log.d(ARG_ITEM_ID,mItem.toString());
     }
 
     @Override
@@ -64,6 +66,7 @@ public class RecipeDetailFragment extends Fragment {
         if (mItem != null) {
             ((TextView) rootView.findViewById(R.id.recipe_detail)).setText(mItem.getInstructions());
         }
+        Log.d(ARG_ITEM_ID,mItem.toString());
 
         return rootView;
     }

@@ -383,6 +383,11 @@ public class Recipe_ implements Parcelable
     }*/
 
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeValue(title);
+        dest.writeValue(readyInMinutes);
+        dest.writeValue(image);
+        dest.writeValue(imageType);
+        dest.writeValue(instructions);
         dest.writeValue(vegetarian);
         dest.writeValue(vegan);
         dest.writeValue(glutenFree);
@@ -406,11 +411,7 @@ public class Recipe_ implements Parcelable
         dest.writeValue(sourceName);
         dest.writeList(extendedIngredients);
         dest.writeValue(id);
-        dest.writeValue(title);
-        dest.writeValue(readyInMinutes);
-        dest.writeValue(image);
-        dest.writeValue(imageType);
-        dest.writeValue(instructions);
+
     }
 
     public int describeContents() {
