@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import com.sree.snaparecipe.model.clarifai.*;
 
@@ -15,6 +16,8 @@ import java.util.List;
 public class ListIngredients extends AppCompatActivity implements
         AdapterView.OnItemLongClickListener , AdapterView.OnItemClickListener {
     private static final String TAG = "ListIngredients";
+
+    public static final String INTENT_PUT_INGREDIENTS = "INTENT_PUT_INGREDIENTS";
 
     private List<Ingredient> ingredientList;
 
@@ -34,13 +37,23 @@ public class ListIngredients extends AppCompatActivity implements
         Intent caller = getIntent();
         ingredientList = ((Ingredients)caller.getParcelableExtra("Ingredients")).getIngredients();
 
-        adapter = new ArrayAdapter(this,R.layout.list_item,R.id.recipeName, ingredientList);
+        adapter = new ArrayAdapter(this,R.layout.ingredient_cell,R.id.ingredientName, ingredientList);
 
         lv = (ListView) findViewById(R.id.list_view);
         lv.setAdapter(adapter);
         lv.setTextFilterEnabled(true);
         lv.setOnItemLongClickListener(this);
         lv.setOnItemClickListener(this);
+
+        Button showMeRecipes = (Button)findViewById(R.id.showMeRecipes);
+        showMeRecipes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent getRecipesIntent = new Intent(ListIngredients.this,RecipeListActivity.class);
+                getRecipesIntent.putExtra(INTENT_PUT_INGREDIENTS,new Ingredients(ingredientList));
+                startActivity(getRecipesIntent);
+            }
+        });
     }
 
 

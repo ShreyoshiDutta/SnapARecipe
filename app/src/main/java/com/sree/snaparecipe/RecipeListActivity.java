@@ -2,6 +2,8 @@ package com.sree.snaparecipe;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -19,10 +21,13 @@ import android.widget.TextView;
 
 import com.sree.snaparecipe.model.Recipe;
 import com.sree.snaparecipe.model.Recipe_;
+import com.sree.snaparecipe.model.clarifai.Ingredient;
+import com.sree.snaparecipe.model.clarifai.Ingredients;
 import com.sree.snaparecipe.spoonacular.SpoonacularDelegate;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import retrofit2.Call;
@@ -37,10 +42,12 @@ import retrofit2.Response;
  * item details. On tablets, the activity presents the list of items and
  * item details side-by-side using two vertical panes.
  */
-public class RecipeListActivity extends AppCompatActivity implements Callback<Recipe> {
+public class RecipeListActivity extends AppCompatActivity implements Callback<List<Recipe_>> {
     private static final String TAG = "RecipeListActivity";
     private boolean isStubbed=true;
     private SimpleItemRecyclerViewAdapter adapter;
+
+    private Ingredients ingredients;
 
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
@@ -52,6 +59,18 @@ public class RecipeListActivity extends AppCompatActivity implements Callback<Re
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_list);
+
+        setStubbedMode:{
+            try {
+                ApplicationInfo ai = getPackageManager().getApplicationInfo(this.getPackageName(), PackageManager.GET_META_DATA);
+                Bundle bundle = ai.metaData;
+                isStubbed = bundle.getBoolean("isStubbed");
+            } catch (PackageManager.NameNotFoundException e) {
+                Log.e(TAG, "Failed to load meta-data, NameNotFound: " + e.getMessage());
+            } catch (NullPointerException e) {
+                Log.e(TAG, "Failed to load meta-data, NullPointer: " + e.getMessage());
+            }
+        }
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -77,6 +96,8 @@ public class RecipeListActivity extends AppCompatActivity implements Callback<Re
             // activity should be in two-pane mode.
             mTwoPane = true;
         }
+
+
     }
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
@@ -85,34 +106,45 @@ public class RecipeListActivity extends AppCompatActivity implements Callback<Re
         recyclerView.setAdapter(this.adapter);
     }
     List<Recipe_> intializeRecipes() {
+        ingredients = getIntent().getParcelableExtra(ListIngredients.INTENT_PUT_INGREDIENTS);
         List<Recipe_> rtrn = new ArrayList<>();
 
         Log.v(TAG,"Calling spponacular");
-        SpoonacularDelegate.requestRecipies(this,isStubbed);
+        //SpoonacularDelegate.requestRecipies(this,isStubbed);
+        List<Ingredient> is = new ArrayList<>();
+        if(ingredients==null || ingredients.getIngredients().size()==0) {
+            is.add(new Ingredient("Carrot", .98f));
+            is.add(new Ingredient("Capsicum", .95f));
+            is.add(new Ingredient("Ginger", .92f));
+            is.add(new Ingredient("fish", .93f));
+        }else{
+            is.addAll(ingredients.getIngredients());
+        }
+        SpoonacularDelegate.requestRecipies(this,isStubbed, is,2);
         //spoonacularService.listRandomRecipes(4,"lIQwnxhTt8mshrspQjiOj9uYDVs5p1K8otZjsncetRKjGas2oN").enqueue(this);
 
         return rtrn;
     }
 
     @Override
-    public void onResponse(Call<Recipe> call, Response<Recipe> response) {
-        Recipe ms = response.body();
-        Log.v(TAG, "size=" + ms.getRecipes().size());
+    public void onResponse(Call<List<Recipe_>> call, Response<List<Recipe_>> response) {
+        List<Recipe_> ms = response.body();
+        Log.v(TAG, "size=" + ms.size());
 
-        for(Recipe_ m : ms.getRecipes()){
+        for(Recipe_ m : ms){
             Log.v(TAG,m.toString());
         }
 
 
         //ms.getRecipes().get(0).writeToParcel(new Parcel());
         adapter.clear();
-        adapter.addAll(ms.getRecipes());
+        adapter.addAll(ms);
         adapter.notifyDataSetChanged();
 
     }
 
     @Override
-    public void onFailure(Call<Recipe> call, Throwable t) {
+    public void onFailure(Call<List<Recipe_>> call, Throwable t) {
 
 
     }

@@ -47,8 +47,6 @@ public class Ingredient implements Parcelable {
 
     @Override
     public String toString() {
-        return
-                "name='" + name + '\'' +
-                ", value=" + value;
+        return name ;
     }
 }
