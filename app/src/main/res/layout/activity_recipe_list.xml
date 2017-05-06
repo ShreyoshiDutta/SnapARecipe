@@ -4,32 +4,91 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?android:attr/colorPressedHighlight"
+    android:background="#f3e3d4"
     android:fitsSystemWindows="true"
     tools:context="com.sree.snaparecipe.RecipeListActivity">
 
 
     <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="393dp"
+        android:id="@+id/toolbar3"
+        android:layout_width="0dp"
         android:layout_height="59dp"
-        android:background="#772c2c"
-        app:popupTheme="@style/AppTheme.PopupOverlay"
-        tools:layout_editor_absoluteY="0dp"
+        android:background="@color/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_constraintLeft_creator="1"
+        tools:layout_constraintRight_creator="1"
+        tools:layout_constraintTop_creator="1"
+        android:layout_marginTop="1dp"
+        app:layout_constraintHorizontal_bias="1.0" />
 
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="104dp"
+        android:layout_height="97dp"
+        android:layout_marginEnd="35dp"
+        android:layout_marginRight="70dp"
+        android:layout_marginStart="35dp"
+        app:layout_constraintRight_toLeftOf="@+id/textView2"
+        app:srcCompat="@android:drawable/ic_menu_gallery"
+        tools:layout_constraintBottom_creator="1"
+        tools:layout_constraintLeft_creator="1"
+        tools:layout_constraintRight_creator="1"
+        tools:layout_constraintTop_creator="1"
+        tools:layout_editor_absoluteY="115dp" />
 
-    <FrameLayout
-        android:id="@+id/frameLayout"
+    <AdapterViewFlipper
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        tools:layout_editor_absoluteX="8dp"
-        tools:layout_editor_absoluteY="8dp">
+        tools:layout_constraintTop_creator="1"
+        tools:layout_constraintBottom_creator="1"
+        app:layout_constraintBottom_toTopOf="@+id/button2"
+        tools:layout_constraintLeft_creator="1"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/button2" />
 
-        <include layout="@layout/recipe_list" />
-    </FrameLayout>
+    <Button
+        android:id="@+id/button2"
+        style="@style/Widget.AppCompat.Button"
+        android:layout_width="68dp"
+        android:layout_height="48dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="1dp"
+        android:backgroundTint="@android:color/transparent"
+        android:drawableBottom="@android:drawable/ic_menu_revert"
+        android:nextFocusLeft="@android:drawable/ic_menu_revert"
+        android:text="Back"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Description of the recipe"
+        android:textColor="@android:color/background_dark"
+        android:textSize="18sp"
+        android:layout_marginRight="16dp"
+        app:layout_constraintRight_toRightOf="parent"
+        tools:layout_constraintBottom_creator="1"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView3"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="31dp" />
 
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Recipe Name"
+        android:textColor="@android:color/background_dark"
+        android:textSize="18sp"
+        tools:layout_constraintBottom_creator="1"
+        app:layout_constraintBottom_toTopOf="@+id/textView2"
+        tools:layout_constraintLeft_creator="1"
+        android:layout_marginBottom="11dp"
+        app:layout_constraintLeft_toLeftOf="@+id/textView2" />
 </android.support.constraint.ConstraintLayout>

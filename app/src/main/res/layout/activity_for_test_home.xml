@@ -4,24 +4,25 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?android:attr/colorPressedHighlight"
+    android:background="#f3e3d4"
     tools:context="com.sree.snaparecipe.ForTestHome"
-    tools:layout_editor_absoluteY="25dp"
-    tools:layout_editor_absoluteX="0dp">
+    tools:layout_editor_absoluteX="0dp"
+    tools:layout_editor_absoluteY="25dp">
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/floatingActionButton"
         android:layout_width="85dp"
         android:layout_height="85dp"
         android:clickable="true"
+        app:backgroundTint="@android:color/background_dark"
         app:fabSize="mini"
-        app:srcCompat="@android:drawable/ic_menu_camera"
         app:layout_constraintBottom_toTopOf="@+id/or"
-        app:layout_constraintTop_toBottomOf="@+id/picture"
-        tools:layout_constraintRight_creator="1"
+        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/picture"
+        app:srcCompat="@android:drawable/ic_menu_camera"
         tools:layout_constraintLeft_creator="1"
-        app:layout_constraintLeft_toLeftOf="parent" />
+        tools:layout_constraintRight_creator="1" />
 
     <TextView
         android:id="@+id/picture"
@@ -32,101 +33,117 @@
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/floatingActionButton"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar2"
-        tools:layout_constraintRight_creator="1"
+        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar2"
         tools:layout_constraintLeft_creator="1"
-        app:layout_constraintLeft_toLeftOf="parent" />
+        tools:layout_constraintRight_creator="1" />
 
     <TextView
         android:id="@+id/or"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="19dp"
+        android:layout_marginEnd="26dp"
+        android:layout_marginRight="26dp"
         android:text="Or,"
         android:textColor="@android:color/black"
         android:textSize="24sp"
         android:textStyle="bold"
-        tools:layout_constraintRight_creator="1"
-        tools:layout_constraintBottom_creator="1"
         app:layout_constraintBottom_toTopOf="@+id/textView5"
-        android:layout_marginEnd="26dp"
         app:layout_constraintRight_toRightOf="@+id/floatingActionButton"
-        android:layout_marginBottom="19dp"
-        android:layout_marginRight="26dp" />
+        tools:layout_constraintBottom_creator="1"
+        tools:layout_constraintRight_creator="1" />
 
     <TextView
         android:id="@+id/textView5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="217dp"
         android:text="Choose from gallery:"
         android:textColor="@android:color/black"
         android:textSize="24sp"
         android:textStyle="bold"
-        tools:layout_constraintRight_creator="1"
-        tools:layout_constraintBottom_creator="1"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
+        tools:layout_constraintBottom_creator="1"
         tools:layout_constraintLeft_creator="1"
-        android:layout_marginBottom="217dp"
-        app:layout_constraintLeft_toLeftOf="parent" />
+        tools:layout_constraintRight_creator="1" />
 
     <ImageView
         android:id="@+id/img2"
         android:layout_width="101dp"
         android:layout_height="90dp"
-        app:srcCompat="@android:drawable/ic_menu_gallery"
-        tools:layout_constraintTop_creator="1"
-        tools:layout_constraintRight_creator="1"
-        app:layout_constraintRight_toRightOf="parent"
         android:layout_marginTop="36dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView5"
+        app:srcCompat="@android:drawable/ic_menu_gallery"
         tools:layout_constraintLeft_creator="1"
-        app:layout_constraintLeft_toLeftOf="parent" />
+        tools:layout_constraintRight_creator="1"
+        tools:layout_constraintTop_creator="1" />
 
     <ImageView
         android:id="@+id/img3"
         android:layout_width="101dp"
         android:layout_height="0dp"
-        app:srcCompat="@android:drawable/ic_menu_gallery"
-        tools:layout_constraintTop_creator="1"
-        tools:layout_constraintRight_creator="1"
-        tools:layout_constraintBottom_creator="1"
         app:layout_constraintBottom_toBottomOf="@+id/img2"
+        app:layout_constraintLeft_toRightOf="@+id/textView5"
         app:layout_constraintRight_toRightOf="@+id/textView5"
-        tools:layout_constraintLeft_creator="1"
         app:layout_constraintTop_toTopOf="@+id/img2"
-        app:layout_constraintLeft_toRightOf="@+id/textView5" />
+        app:srcCompat="@android:drawable/ic_menu_gallery"
+        tools:layout_constraintBottom_creator="1"
+        tools:layout_constraintLeft_creator="1"
+        tools:layout_constraintRight_creator="1"
+        tools:layout_constraintTop_creator="1" />
 
     <ImageView
         android:id="@+id/img1"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:srcCompat="@android:drawable/ic_menu_gallery"
-        app:layout_constraintRight_toLeftOf="@+id/floatingActionButton"
-        tools:layout_constraintTop_creator="1"
-        tools:layout_constraintRight_creator="1"
-        tools:layout_constraintBottom_creator="1"
+        android:layout_marginEnd="24dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="24dp"
         android:layout_marginStart="25dp"
         app:layout_constraintBottom_toBottomOf="@+id/img2"
-        android:layout_marginEnd="24dp"
-        tools:layout_constraintLeft_creator="1"
         app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/floatingActionButton"
         app:layout_constraintTop_toTopOf="@+id/img2"
-        android:layout_marginLeft="25dp"
-        android:layout_marginRight="24dp" />
+        app:srcCompat="@android:drawable/ic_menu_gallery"
+        tools:layout_constraintBottom_creator="1"
+        tools:layout_constraintLeft_creator="1"
+        tools:layout_constraintRight_creator="1"
+        tools:layout_constraintTop_creator="1" />
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar2"
         android:layout_width="0dp"
         android:layout_height="59dp"
-        android:background="#772c2c"
+        android:background="@color/colorPrimary"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
-        tools:layout_constraintTop_creator="1"
-        tools:layout_constraintRight_creator="1"
-        app:layout_constraintRight_toRightOf="parent"
-        tools:layout_constraintLeft_creator="1"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_constraintLeft_creator="1"
+        tools:layout_constraintRight_creator="1"
+        tools:layout_constraintTop_creator="1" />
+
+    <ListView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        tools:layout_editor_absoluteY="8dp" />
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        tools:layout_editor_absoluteY="8dp" />
 
 </android.support.constraint.ConstraintLayout>

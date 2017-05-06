@@ -53,7 +53,7 @@ public class RecipeListActivity extends AppCompatActivity implements Callback<Re
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_list);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+       /* Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitle(getTitle());
 
@@ -76,7 +76,7 @@ public class RecipeListActivity extends AppCompatActivity implements Callback<Re
             // If this view is present, then the
             // activity should be in two-pane mode.
             mTwoPane = true;
-        }
+        }*/
     }
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
