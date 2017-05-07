@@ -9,13 +9,29 @@
     tools:context="com.sree.snaparecipe.ListIngredients">
 
     <!-- Editext for Search -->
-    <EditText android:id="@+id/inputSearch"
+   <!-- <EditText android:id="@+id/inputSearch"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:hint="Search ingredients.."
-        android:inputType="textVisiblePassword"/>
+        android:inputType="textVisiblePassword"/>-->
 
-    <!-- List View -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/newIngdnt"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            />
+
+        <Button
+            android:id="@+id/addBtn"
+            android:layout_width="45dp"
+            android:layout_height="wrap_content"
+            android:text="Add" />
+    </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -37,15 +53,22 @@
 
     </LinearLayout>
 
+    <!-- List View -->
     <ListView
         android:id="@+id/list_view"
         android:layout_width="fill_parent"
-        android:layout_height="381dp" />
+        android:layout_height="wrap_content" />
 
     <Button
         android:id="@+id/showMeRecipes"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="100dp"
         android:text="Show me recipes" />
+
+    <!--<android.support.design.widget.FloatingActionButton-->
+        <!--android:id="@+id/showMeRecipes"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="34dp"-->
+        <!--android:text="Show me recipes" />-->
 
 </LinearLayout>

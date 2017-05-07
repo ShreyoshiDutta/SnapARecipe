@@ -34,6 +34,10 @@ public class ClarifaiDelegate {
             is.add(new Ingredient("Capsicum",.95f));
             is.add(new Ingredient("Ginger",.92f));
             is.add(new Ingredient("fish",.93f));
+            is.add(new Ingredient("Carrot",.98f));
+            is.add(new Ingredient("Capsicum",.95f));
+            is.add(new Ingredient("Ginger",.92f));
+            is.add(new Ingredient("fish",.93f));
 
             return new Ingredients(is);
 

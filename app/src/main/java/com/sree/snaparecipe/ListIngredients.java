@@ -1,17 +1,25 @@
 package com.sree.snaparecipe;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import com.sree.snaparecipe.model.clarifai.*;
 
 import java.util.List;
+
 
 public class ListIngredients extends AppCompatActivity implements
         AdapterView.OnItemLongClickListener , AdapterView.OnItemClickListener {
@@ -25,6 +33,8 @@ public class ListIngredients extends AppCompatActivity implements
     private ArrayAdapter adapter;
     // List view
     private ListView lv;
+
+    private TextView numOfIngdnt;
 
 
     @Override
@@ -46,25 +56,77 @@ public class ListIngredients extends AppCompatActivity implements
         lv.setOnItemClickListener(this);
 
         Button showMeRecipes = (Button)findViewById(R.id.showMeRecipes);
+        //FloatingActionButton showMeRecipes = (FloatingActionButton)findViewById(R.id.showMeRecipes);
         showMeRecipes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent getRecipesIntent = new Intent(ListIngredients.this,RecipeListActivity.class);
-                getRecipesIntent.putExtra(INTENT_PUT_INGREDIENTS,new Ingredients(ingredientList));
+                //List<Ingredient> wantedIngredients = retainWanted(ingredientList);//.stream().filter(i -> i.value > 0.92f);
+                getRecipesIntent.putExtra(INTENT_PUT_INGREDIENTS,new Ingredients(retainWanted(ingredientList)));
                 startActivity(getRecipesIntent);
             }
+
+            List<Ingredient> retainWanted(List<Ingredient> ii){
+                for(Ingredient i : ii){
+                    if(i.value<0.92f) ii.remove(i);
+                }
+                return ii;
+            }
         });
+
+        final EditText newIngdnt = (EditText)findViewById(R.id.newIngdnt);
+        Button addIngdntBtn = (Button)findViewById(R.id.addBtn);
+        addIngdntBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //ingredientList.add(new Ingredient(newIngdnt.getText().toString(),1.0f));
+                Ingredient i = new Ingredient(newIngdnt.getText().toString(),1.0f);
+                adapter.add(i);
+                Log.v(TAG,"added new ing: "+i);
+                refreshListView();
+            }
+        });
+
+        numOfIngdnt=(TextView)findViewById(R.id.numOfIngredients);
+        numOfIngdnt.setText(String.valueOf(ingredientList.size()));
     }
 
 
     @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+    public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
 
     }
 
     @Override
     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+        AlertDialog.Builder builder =
+                new AlertDialog.Builder(view.getContext());
+        builder.setTitle("Remove Ingredient?");
+        final Ingredient toRemove = ingredientList.get(position);
+        builder.setMessage(String.format("Are you sure you wish to remove this %s?",toRemove.name));
+        builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                // Remove ingredeint and Update ListView
+
+                adapter.remove(toRemove);
+                refreshListView();
+                Toast.makeText(getBaseContext(), toRemove.name+" has been deleted", Toast.LENGTH_SHORT).show();
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+            }
+        });
+
+        builder.create().show();
         return false;
+    }
+
+    private void refreshListView() {
+        numOfIngdnt.setText(String.valueOf(adapter.getCount()));
     }
 
 
