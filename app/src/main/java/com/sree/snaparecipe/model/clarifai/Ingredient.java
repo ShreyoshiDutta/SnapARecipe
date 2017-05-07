@@ -8,7 +8,9 @@ import android.os.Parcelable;
  */
 
 public class Ingredient implements Parcelable {
+
     public String name;
+    // confidence level for this ingredient. How confident Clarifai is that this is indeed correctly identified.
     public float value;
 
     public Ingredient(String name, float value) {

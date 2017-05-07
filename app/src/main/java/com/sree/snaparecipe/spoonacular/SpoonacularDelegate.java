@@ -1,17 +1,14 @@
 package com.sree.snaparecipe.spoonacular;
 
-import android.app.Activity;
 import android.util.Log;
 
 import com.cloudinary.utils.StringUtils;
-import com.sree.snaparecipe.ListRecipes;
 import com.sree.snaparecipe.model.Recipe;
 import com.sree.snaparecipe.model.Recipe_;
 import com.sree.snaparecipe.RecipeListActivity;
 import com.sree.snaparecipe.model.ShortRecipe;
 import com.sree.snaparecipe.model.clarifai.Ingredient;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,7 +22,6 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
-import retrofit2.http.Path;
 import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
 
@@ -76,7 +72,7 @@ public class SpoonacularDelegate {
 
     }
 
-    public static void requestRecipies(final ListRecipes callback, boolean isStubbed){
+    /*public static void requestRecipies(final ListRecipes callback, boolean isStubbed){
         if (isStubbed){
              Log.d(TAG,"using stubbed");
             new Thread(
@@ -104,7 +100,7 @@ public class SpoonacularDelegate {
         }
 
     }
-
+*/
     // from master-detailed flow
     public static void requestRecipies(final RecipeListActivity callback, boolean isStubbed){
         if (isStubbed){

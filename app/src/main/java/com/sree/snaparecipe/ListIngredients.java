@@ -18,6 +18,8 @@ import android.widget.Toast;
 
 import com.sree.snaparecipe.model.clarifai.*;
 
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 
@@ -28,6 +30,7 @@ public class ListIngredients extends AppCompatActivity implements
     public static final String INTENT_PUT_INGREDIENTS = "INTENT_PUT_INGREDIENTS";
 
     private List<Ingredient> ingredientList;
+    private List<Ingredient> acceptedIngredientList;
 
     // Listview Adapter
     private ArrayAdapter adapter;
@@ -45,9 +48,11 @@ public class ListIngredients extends AppCompatActivity implements
 
 
         Intent caller = getIntent();
+        //fetches the ingradients from the indent which came from HomeActivity
         ingredientList = ((Ingredients)caller.getParcelableExtra("Ingredients")).getIngredients();
+        acceptedIngredientList = retainWanted(ingredientList);
 
-        adapter = new ArrayAdapter(this,R.layout.ingredient_cell,R.id.ingredientName, ingredientList);
+        adapter = new ArrayAdapter(this,R.layout.ingredient_cell,R.id.ingredientName, acceptedIngredientList);
 
         lv = (ListView) findViewById(R.id.list_view);
         lv.setAdapter(adapter);
@@ -62,16 +67,11 @@ public class ListIngredients extends AppCompatActivity implements
             public void onClick(View v) {
                 Intent getRecipesIntent = new Intent(ListIngredients.this,RecipeListActivity.class);
                 //List<Ingredient> wantedIngredients = retainWanted(ingredientList);//.stream().filter(i -> i.value > 0.92f);
-                getRecipesIntent.putExtra(INTENT_PUT_INGREDIENTS,new Ingredients(retainWanted(ingredientList)));
+                getRecipesIntent.putExtra(INTENT_PUT_INGREDIENTS,new Ingredients(acceptedIngredientList));
                 startActivity(getRecipesIntent);
             }
 
-            List<Ingredient> retainWanted(List<Ingredient> ii){
-                for(Ingredient i : ii){
-                    if(i.value<0.92f) ii.remove(i);
-                }
-                return ii;
-            }
+
         });
 
         final EditText newIngdnt = (EditText)findViewById(R.id.newIngdnt);
@@ -81,9 +81,12 @@ public class ListIngredients extends AppCompatActivity implements
             public void onClick(View v) {
                 //ingredientList.add(new Ingredient(newIngdnt.getText().toString(),1.0f));
                 Ingredient i = new Ingredient(newIngdnt.getText().toString(),1.0f);
-                adapter.add(i);
+                //adapter.add(i);
+                adapter.insert(i,0);
                 Log.v(TAG,"added new ing: "+i);
                 refreshListView();
+                newIngdnt.setText("");
+                Toast.makeText(getBaseContext(), i.name+" has been added", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -91,6 +94,15 @@ public class ListIngredients extends AppCompatActivity implements
         numOfIngdnt.setText(String.valueOf(ingredientList.size()));
     }
 
+    List<Ingredient> retainWanted(List<Ingredient> ii){
+        //List<Ingredient> toReturn =   Collections.synchronizedList(ii);
+        Iterator<Ingredient> iter = ii.iterator();
+        while(iter.hasNext()){
+            Ingredient i = iter.next();
+            if(i.value<0.95f) iter.remove();
+        }
+        return ii;
+    }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {

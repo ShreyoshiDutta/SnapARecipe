@@ -26,9 +26,11 @@ import com.sree.snaparecipe.model.clarifai.Ingredients;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements  View.OnClickListener{
+public class HomeActivity extends AppCompatActivity implements  View.OnClickListener{
 
-    private static final String TAG = "MainActivity";
+    // TAG is useful for labeling logs.
+    private static final String TAG = "HomeActivity";
+
 
     private LinearLayout mGallery;
     private int[] mImgIds;
@@ -45,10 +47,38 @@ public class MainActivity extends AppCompatActivity implements  View.OnClickList
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        //usual bolier plate code.
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_for_test_home);
+        // sets the layout resource
+        setContentView(R.layout.activity_home);
+        /* stubbed mode is used to minimise API usages which costs real money.
+         * This mode is controlled by the meta-data named "isStubbed" in AndroidManifest.xml
+         */
+        setStubbedMode();
 
-        setStubbedMode:{
+        //Gets the Camera button
+        FloatingActionButton imageButton = (FloatingActionButton) findViewById(R.id.floatingCameraButton);
+        //and sets up the action to take on camera click.
+        imageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //The action is to start a new intent called "ImageCapture"
+                startActivity(new Intent(HomeActivity.this,ImageCapture.class));
+            }
+        });
+
+        gallery:{
+            mInflater = LayoutInflater.from(this);
+            mGallery = (LinearLayout) findViewById(R.id.id_gallery);
+            initData();
+        }
+
+
+
+    }
+
+    private void setStubbedMode() {
+        {
             try {
                 ApplicationInfo ai = getPackageManager().getApplicationInfo(this.getPackageName(), PackageManager.GET_META_DATA);
                 Bundle bundle = ai.metaData;
@@ -59,45 +89,17 @@ public class MainActivity extends AppCompatActivity implements  View.OnClickList
                 Log.e(TAG, "Failed to load meta-data, NullPointer: " + e.getMessage());
             }
         }
-        /*Button getRecipe = (Button)findViewById(R.id.button);
-
-        getRecipe.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //startActivity(new Intent(MainActivity.this,ListRecipes.class));
-                startActivity(new Intent(MainActivity.this,RecipeListActivity.class));
-
-            }
-        });*/
-
-        //Gets the Camera button and sets up the action to take on camera click.
-        FloatingActionButton imageButton = (FloatingActionButton) findViewById(R.id.floatingCameraButton);
-        imageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this,ImageCapture.class));
-            }
-        });
-
-        gallery:{
-            mInflater = LayoutInflater.from(this);
-            mGallery = (LinearLayout) findViewById(R.id.id_gallery);
-            initData();
-            //initView();
-        }
-
-
-
     }
 
+    /*
+    1. Fetches all images taken by this app, from the android gallery.
+    2. Adds each image to the horizontal scrollview/linear layout.
+     */
     private void initData() {
-
-
         // URI is private to my app
         cc = this.getContentResolver().query(
                 MediaStore.Images.Media.INTERNAL_CONTENT_URI, null, null, null,
                 null);
-
 
         if (cc != null) {
 
@@ -107,6 +109,11 @@ public class MainActivity extends AppCompatActivity implements  View.OnClickList
             //myProgressDialog.setIcon(R.drawable.blind);
             myProgressDialog.show();
 
+            /*
+             * The images are being fetched in a seperate background thread because it takes sometime to read images.
+             * During this time UI thread should not be blocked , otherwise it will seem as if the app has hanged
+             * because app won't respond to UI gestures.
+             */
             new Thread() {
                 public void run() {
                     try {
@@ -125,14 +132,17 @@ public class MainActivity extends AppCompatActivity implements  View.OnClickList
                                         mGallery, false);
                                 ImageView img = (ImageView) view
                                         .findViewById(R.id.id_index_gallery_item_image);
+                                // reusing transition name to hold file path of the image
                                 img.setTransitionName(strUrls.get(i));
-
+                                // sets the file path for the image to be displayed
                                 img.setImageURI(mUrls[i]);
+                                // on click a new intent is opened to show list of ingredients
+                                img.setOnClickListener(HomeActivity.this);
                                 TextView txt = (TextView) view
                                         .findViewById(R.id.id_index_gallery_item_text);
                                 txt.setText(mNames[i]);
                                 mGallery.addView(view);
-                                img.setOnClickListener(MainActivity.this);
+
                             }
                         }
 
@@ -144,39 +154,22 @@ public class MainActivity extends AppCompatActivity implements  View.OnClickList
         }
     }
 
-    private void initView()
-    {
-        mGallery = (LinearLayout) findViewById(R.id.id_gallery);
-
-        for (int i = 0; i < mUrls.length; i++)
-        {
-
-            View view = mInflater.inflate(R.layout.activity_gallery_item,
-                    mGallery, false);
-            ImageView img = (ImageView) view
-                    .findViewById(R.id.id_index_gallery_item_image);
-
-            img.setImageURI(mUrls[i]);
-            TextView txt = (TextView) view
-                    .findViewById(R.id.id_index_gallery_item_text);
-            txt.setText("info "+i);
-            mGallery.addView(view);
-
-        }
-    }
 
     @Override
     public void onClick(View v) {
 
-
+                // This will always be a ImageView as we are setting this up while loading the galley.
                 ImageView iv = (ImageView)v;
+                // Transition name has bben re-used to hold image file path.
                 final String imageFilePath = iv.getTransitionName();
                 final AsyncTask executeClarifai = new AsyncTask() {
 
                     @Override
                     protected Object doInBackground(Object[] params) {
-                        Intent showIngredientView = new Intent(MainActivity.this,ListIngredients.class);
-
+                        Intent showIngredientView = new Intent(HomeActivity.this,ListIngredients.class);
+                        /* delegates responsibility to fetch detected ingredients to Clarifai API via ClarifaiDelegate class.
+                         * If isStubbed == true then ClarifaiDelegate returns stubbed response instead of making a real API call.
+                         */
                         Ingredients detectedIngredients = ClarifaiDelegate.getDetectedIngredients(imageFilePath ,isStubbed);
                         showIngredientView.putExtra("Ingredients",detectedIngredients);
                         startActivity(showIngredientView);
