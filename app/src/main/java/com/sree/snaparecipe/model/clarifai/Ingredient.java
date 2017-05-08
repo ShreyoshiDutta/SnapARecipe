@@ -3,9 +3,6 @@ package com.sree.snaparecipe.model.clarifai;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-/**
- * Created by araksh on 23/04/2017.
- */
 
 public class Ingredient implements Parcelable {
 

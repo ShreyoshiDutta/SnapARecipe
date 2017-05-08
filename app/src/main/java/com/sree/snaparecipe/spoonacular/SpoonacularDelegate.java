@@ -26,7 +26,8 @@ import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
 
 /**
- * Created by Sonai on 14/4/17.
+ * Spoonacular does not supply its own api client so retrofit has been used instead.
+ *
  */
 
 public class SpoonacularDelegate {
@@ -72,35 +73,7 @@ public class SpoonacularDelegate {
 
     }
 
-    /*public static void requestRecipies(final ListRecipes callback, boolean isStubbed){
-        if (isStubbed){
-             Log.d(TAG,"using stubbed");
-            new Thread(
-            new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        Thread.sleep(1000l);
-                    } catch (InterruptedException e) {
-                        Log.e(TAG,e.getMessage());
-                    }
-                    callback.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            callback.onResponse(null,Response.success(new Recipe(null)));
-                        }
-                    });
 
-                }
-            }).start();
-            //callback.onResponse(null,Response.success(new Recipe(null)));
-        }else{
-
-            spoonacularService.listRandomRecipes(4,"lIQwnxhTt8mshrspQjiOj9uYDVs5p1K8otZjsncetRKjGas2oN").enqueue(callback);
-        }
-
-    }
-*/
     // from master-detailed flow
     public static void requestRecipies(final RecipeListActivity callback, boolean isStubbed){
         if (isStubbed){
@@ -141,6 +114,7 @@ public class SpoonacularDelegate {
     }
 
 
+    // Inteface defining the spooncular api. This is used by retrofit to create the api client.
     public  interface SpoonacularService {
         @GET("recipes/random")
         Call<Recipe> listRandomRecipes(@Query("number") int count, @Header("X-Mashape-Key") String token);

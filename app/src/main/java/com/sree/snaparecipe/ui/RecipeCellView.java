@@ -17,9 +17,6 @@ import android.net.Uri;
 import java.net.URISyntaxException;
 import java.util.List;
 
-/**
- * Created by araksh on 30/04/2017.
- */
 
 public class RecipeCellView extends ArrayAdapter<Recipe_> {
     private static final String TAG = "RecipeCellView";

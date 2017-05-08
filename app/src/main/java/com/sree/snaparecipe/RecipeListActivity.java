@@ -76,12 +76,13 @@ public class RecipeListActivity extends AppCompatActivity implements Callback<Li
         setSupportActionBar(toolbar);
         toolbar.setTitle(getTitle());
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+
+        FloatingActionButton camera = (FloatingActionButton) findViewById(R.id.camera);
+        camera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                //The action is to start a new intent called "ImageCapture"
+                startActivity(new Intent(RecipeListActivity.this,ImageCapture.class));
             }
         });
 

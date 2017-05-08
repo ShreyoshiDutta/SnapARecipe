@@ -47,7 +47,7 @@ public class HomeActivity extends AppCompatActivity implements  View.OnClickList
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        //usual bolier plate code.
+        //usual boiler plate code.
         super.onCreate(savedInstanceState);
         // sets the layout resource
         setContentView(R.layout.activity_home);
