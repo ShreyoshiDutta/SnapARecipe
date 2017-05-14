@@ -39,7 +39,7 @@
             android:value="cloudinary://492815673726876:0IjSkNjIO0JwG1DbkmSHZx8qkws@dccxbk5g8" />
         <meta-data
             android:name="isStubbed"
-            android:value="false" />
+            android:value="true" />
 
         <activity
             android:name=".RecipeListActivity"

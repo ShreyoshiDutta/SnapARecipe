@@ -100,6 +100,7 @@ public class HomeActivity extends AppCompatActivity implements  View.OnClickList
         cc = this.getContentResolver().query(
                 MediaStore.Images.Media.INTERNAL_CONTENT_URI, null, null, null,
                 null);
+        Log.v(TAG,"number of images retrieved = "+cc.getCount());
 
         if (cc != null) {
 
@@ -116,38 +117,41 @@ public class HomeActivity extends AppCompatActivity implements  View.OnClickList
              */
             new Thread() {
                 public void run() {
-                    try {
+
                         cc.moveToFirst();
                         mUrls = new Uri[cc.getCount()];
                         //strUrls = new String[cc.getCount()];
                         mNames = new String[cc.getCount()];
                         for (int i = 0; i < cc.getCount(); i++) {
-                            cc.moveToPosition(i);
-                            mUrls[i] = Uri.parse(cc.getString(1));
-                            strUrls.add(cc.getString(1));
-                            mNames[i] = cc.getString(3);
-                            Log.e("initData : mNames[i]",mNames[i]+":"+cc.getColumnCount()+ " : " +cc.getString(3));
-                            {
-                                View view = mInflater.inflate(R.layout.activity_gallery_item,
-                                        mGallery, false);
-                                ImageView img = (ImageView) view
-                                        .findViewById(R.id.id_index_gallery_item_image);
-                                // reusing transition name to hold file path of the image
-                                img.setTransitionName(strUrls.get(i));
-                                // sets the file path for the image to be displayed
-                                img.setImageURI(mUrls[i]);
-                                // on click a new intent is opened to show list of ingredients
-                                img.setOnClickListener(HomeActivity.this);
-                                TextView txt = (TextView) view
-                                        .findViewById(R.id.id_index_gallery_item_text);
-                                txt.setText(mNames[i]);
-                                mGallery.addView(view);
+                            try{
+                                cc.moveToPosition(i);
+                                mUrls[i] = Uri.parse(cc.getString(1));
+                                strUrls.add(cc.getString(1));
+                                mNames[i] = cc.getString(3);
+                                Log.e("initData : mNames[i]",mNames[i]+":"+cc.getColumnCount()+ " : " +cc.getString(3));
+                                {
+                                    View view = mInflater.inflate(R.layout.activity_gallery_item,
+                                            mGallery, false);
+                                    ImageView img = (ImageView) view
+                                            .findViewById(R.id.id_index_gallery_item_image);
+                                    // reusing transition name to hold file path of the image
+                                    img.setTransitionName(strUrls.get(i));
+                                    // sets the file path for the image to be displayed
+                                    img.setImageURI(mUrls[i]);
+                                    // on click a new intent is opened to show list of ingredients
+                                    img.setOnClickListener(HomeActivity.this);
+                                    TextView txt = (TextView) view
+                                            .findViewById(R.id.id_index_gallery_item_text);
+                                    txt.setText(mNames[i]);
+                                    mGallery.addView(view);
 
+                                }
+                            }catch (Exception e) {
+                                Log.e(TAG,e.getMessage());
                             }
                         }
 
-                    } catch (Exception e) {
-                    }
+
                     myProgressDialog.dismiss();
                 }
             }.start();
