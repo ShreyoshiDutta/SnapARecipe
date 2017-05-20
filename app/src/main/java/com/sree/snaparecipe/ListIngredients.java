@@ -1,13 +1,17 @@
 package com.sree.snaparecipe;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -17,6 +21,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.sree.snaparecipe.model.clarifai.*;
+
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.Collections;
 import java.util.Iterator;
@@ -38,6 +44,7 @@ public class ListIngredients extends AppCompatActivity implements
     private ListView lv;
 
     private TextView numOfIngdnt;
+    private Button showMeRecipes;
 
 
     @Override
@@ -60,7 +67,8 @@ public class ListIngredients extends AppCompatActivity implements
         lv.setOnItemLongClickListener(this);
         lv.setOnItemClickListener(this);
 
-        Button showMeRecipes = (Button)findViewById(R.id.showMeRecipes);
+        showMeRecipes = (Button)findViewById(R.id.showMeRecipes);
+        showMeRecipes.setEnabled(adapter.getCount()>0);
         //FloatingActionButton showMeRecipes = (FloatingActionButton)findViewById(R.id.showMeRecipes);
         showMeRecipes.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,25 +82,81 @@ public class ListIngredients extends AppCompatActivity implements
 
         });
 
+        final Button addIngdntBtn = (Button)findViewById(R.id.addBtn);
         final EditText newIngdnt = (EditText)findViewById(R.id.newIngdnt);
-        Button addIngdntBtn = (Button)findViewById(R.id.addBtn);
+        newIngdnt.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                addIngdntBtn.setEnabled(false);
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                addIngdntBtn.setEnabled(true);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                addIngdntBtn.setEnabled(true);
+            }
+        });
+
+
         addIngdntBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //ingredientList.add(new Ingredient(newIngdnt.getText().toString(),1.0f));
-                Ingredient i = new Ingredient(newIngdnt.getText().toString(),1.0f);
-                //adapter.add(i);
-                adapter.insert(i,0);
-                Log.v(TAG,"added new ing: "+i);
-                refreshListView();
-                newIngdnt.setText("");
-                Toast.makeText(getBaseContext(), i.name+" has been added", Toast.LENGTH_SHORT).show();
+                String ingName = newIngdnt.getText().toString();
+                if(StringUtils.isEmpty(ingName)) {
+                    Toast.makeText(getBaseContext(),  "enter an ingredient", Toast.LENGTH_SHORT).show();
+                }else{
+                    Ingredient i = new Ingredient(ingName, 1.0f);
+                    //adapter.add(i);
+                    adapter.insert(i, 0);
+                    Log.v(TAG, "added new ing: " + i);
+                    refreshListView();
+                    newIngdnt.setText("");
+                    Toast.makeText(getBaseContext(), i.name + " has been added", Toast.LENGTH_SHORT).show();
+                    addIngdntBtn.setEnabled(false);
+                    View view = ListIngredients.this.getCurrentFocus();
+                    if (view != null) {
+
+                        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                    }
+                }
             }
         });
 
         numOfIngdnt=(TextView)findViewById(R.id.numOfIngredients);
         numOfIngdnt.setText(String.valueOf(ingredientList.size()));
+
+        //Gets the Camera button
+        FloatingActionButton imageButton = (FloatingActionButton) findViewById(R.id.floatingAddMoreButton);
+        //and sets up the action to take on camera click.
+        imageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //The action is to start a new intent called "ImageCapture"
+                startActivity(new Intent(ListIngredients.this,ImageCapture.class));
+            }
+        });
     }
+
+    @Override
+    protected void onNewIntent(Intent intent){
+        Log.d(TAG, "in onNewIntent");
+        List<Ingredient> newIngredientList = ((Ingredients)intent.getParcelableExtra("Ingredients")).getIngredients();
+        for(Ingredient i : retainWanted(newIngredientList)) {
+            adapter.insert(i,0);
+            Log.v(TAG,"added new ing: "+i);
+        }
+
+        refreshListView();
+    }
+
+
+
 
     List<Ingredient> retainWanted(List<Ingredient> ii){
         //List<Ingredient> toReturn =   Collections.synchronizedList(ii);
@@ -138,6 +202,7 @@ public class ListIngredients extends AppCompatActivity implements
     }
 
     private void refreshListView() {
+        showMeRecipes.setEnabled(adapter.getCount()>0);
         numOfIngdnt.setText(String.valueOf(adapter.getCount()));
     }
 

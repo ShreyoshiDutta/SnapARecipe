@@ -135,7 +135,8 @@ public class ImageCapture extends AppCompatActivity {
                 @Override
                 protected Object doInBackground(Object[] params) {
                     Intent showIngredientView = new Intent(ImageCapture.this,ListIngredients.class);
-
+                    showIngredientView.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    showIngredientView.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                     Ingredients detectedIngredients = ClarifaiDelegate.getDetectedIngredients(mCurrentPhotoPath,isStubbed);
                     showIngredientView.putExtra("Ingredients",detectedIngredients);
                     startActivity(showIngredientView);
