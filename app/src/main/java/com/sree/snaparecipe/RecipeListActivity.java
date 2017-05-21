@@ -6,7 +6,9 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.design.widget.FloatingActionButton;
@@ -16,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 
@@ -76,15 +79,21 @@ public class RecipeListActivity extends AppCompatActivity implements Callback<Li
         setSupportActionBar(toolbar);
         toolbar.setTitle(getTitle());
 
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
 
-        FloatingActionButton camera = (FloatingActionButton) findViewById(R.id.camera);
+        }
+
+
+       /* FloatingActionButton camera = (FloatingActionButton) findViewById(R.id.camera);
         camera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //The action is to start a new intent called "ImageCapture"
                 startActivity(new Intent(RecipeListActivity.this,ImageCapture.class));
             }
-        });
+        });*/
 
         View recyclerView = findViewById(R.id.recipe_list);
         assert recyclerView != null;
@@ -105,6 +114,8 @@ public class RecipeListActivity extends AppCompatActivity implements Callback<Li
         intializeRecipes();
         this.adapter=new SimpleItemRecyclerViewAdapter(new ArrayList<Recipe_>());
         recyclerView.setAdapter(this.adapter);
+        recyclerView.addItemDecoration(new DividerItemDecoration(this,
+                DividerItemDecoration.VERTICAL));
     }
     List<Recipe_> intializeRecipes() {
         ingredients = getIntent().getParcelableExtra(ListIngredients.INTENT_PUT_INGREDIENTS);
@@ -191,7 +202,7 @@ public class RecipeListActivity extends AppCompatActivity implements Callback<Li
             final Recipe_ currentRecipe = holder.mItem = mValues.get(position);
             Log.v(TAG,"current recipe : "+currentRecipe.toString());
             holder.mIdView.setText(currentRecipe.getTitle());
-            holder.mContentView.setText(currentRecipe.getVegan()==true?"Vegan":currentRecipe.getVegetarian()==true?"Vegetarian":"");
+            //holder.mContentView.setText(currentRecipe.getVegan()==true?"Vegan":currentRecipe.getVegetarian()==true?"Vegetarian":"");
 
             holder.mView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -214,6 +225,15 @@ public class RecipeListActivity extends AppCompatActivity implements Callback<Li
                     }
                 }
             });
+
+            ((TextView) holder.mView.findViewById(R.id.timetocook)).setText(currentRecipe.getReadyInMinutes()+" mins");
+            ((TextView) holder.mView.findViewById(R.id.healthScore)).setText(currentRecipe.getWeightWatcherSmartPoints()+"/100");
+
+            ((ImageView) holder.mView.findViewById(R.id.imageHealthy)).setVisibility(currentRecipe.getVeryHealthy()?View.VISIBLE:View.INVISIBLE);
+            ((ImageView) holder.mView.findViewById(R.id.imagePopular)).setVisibility(currentRecipe.getVeryPopular()?View.VISIBLE:View.INVISIBLE);
+            ((ImageView) holder.mView.findViewById(R.id.imageVegan)).setVisibility(currentRecipe.getVegan()?View.VISIBLE:View.INVISIBLE);
+            ((ImageView) holder.mView.findViewById(R.id.imageVege)).setVisibility(currentRecipe.getVegetarian()?View.VISIBLE:View.INVISIBLE);
+
         }
 
         @Override
@@ -224,19 +244,20 @@ public class RecipeListActivity extends AppCompatActivity implements Callback<Li
         public class ViewHolder extends RecyclerView.ViewHolder {
             public final View mView;
             public final TextView mIdView;
-            public final TextView mContentView;
+            //public final TextView mContentView;
             public Recipe_ mItem;
 
             public ViewHolder(View view) {
                 super(view);
                 mView = view;
                 mIdView = (TextView) view.findViewById(R.id.id);
-                mContentView = (TextView) view.findViewById(R.id.content);
+                //mContentView = (TextView) view.findViewById(R.id.content);
             }
 
             @Override
             public String toString() {
-                return super.toString() + " '" + mContentView.getText() + "'";
+                //return super.toString() + " '" + mContentView.getText() + "'";
+                return super.toString();
             }
         }
     }

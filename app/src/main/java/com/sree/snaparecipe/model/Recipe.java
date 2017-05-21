@@ -433,11 +433,11 @@ public class Recipe implements Parcelable
             "\t\t\t}]\n" +
             "\t\t}]\n" +
             "\t}, {\n" +
-            "\t\t\"vegetarian\": false,\n" +
-            "\t\t\"vegan\": false,\n" +
+            "\t\t\"vegetarian\": true,\n" +
+            "\t\t\"vegan\": true,\n" +
             "\t\t\"glutenFree\": true,\n" +
             "\t\t\"dairyFree\": false,\n" +
-            "\t\t\"veryHealthy\": false,\n" +
+            "\t\t\"veryHealthy\": true,\n" +
             "\t\t\"cheap\": false,\n" +
             "\t\t\"veryPopular\": true,\n" +
             "\t\t\"sustainable\": false,\n" +

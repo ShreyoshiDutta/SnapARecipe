@@ -4,12 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="#f3e3d4"
+    android:background="@android:color/background_light"
     android:orientation="vertical"
     android:weightSum="1"
     tools:context="com.sree.snaparecipe.ListIngredients"
     tools:layout_editor_absoluteY="0dp"
-    tools:layout_editor_absoluteX="0dp">
+    tools:layout_editor_absoluteX="0dp"
+    >
 
     <!-- Editext for Search -->
     <!-- <EditText android:id="@+id/inputSearch"
@@ -25,79 +26,90 @@
         android:id="@+id/relativeLayout2"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
-
-        <TextView
-            android:id="@+id/textView6"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Total Ingredeints"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            />
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="5pt"
+        android:layout_marginBottom="5pt">
 
         <TextView
             android:id="@+id/numOfIngredients"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="TextView"
+            android:layout_centerVertical="true"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:layout_toRightOf="@id/textView6" />
+            android:layout_marginLeft="12dip"
+            android:layout_alignParentLeft="true"/>
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" Ingredients. Add more?"
+            android:layout_toRightOf="@id/numOfIngredients"
+            android:layout_centerVertical="true"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            />
 
-        <Button
+
+
+
+
+        <!--<Button
             android:id="@+id/showMeRecipes"
             android:layout_width="124dp"
             android:layout_height="63dp"
             android:text="Show me recipes"
             android:layout_toRightOf="@id/numOfIngredients"
 
-            />
+            />-->
 
     </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="20pt"
+        android:layout_height="30pt"
         android:id="@+id/relativeLayout"
         android:layout_below="@+id/relativeLayout2"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
+        android:layout_marginTop="5pt"
+        >
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/floatingAddMoreButton"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:clickable="true"
-            app:backgroundTint="@android:color/background_dark"
-            app:fabSize="mini"
-            app:srcCompat="@android:drawable/ic_menu_camera"
-            />
+            app:backgroundTint="@android:color/background_light"
+            app:fabSize="normal"
 
-        <!--<TextView
-            android:id="@+id/textView2"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="Or, add new item"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:layout_toRightOf="@id/floatingAddMoreButton" />
--->
+        app:srcCompat="@drawable/addcamera48blk"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="12dip"
+
+            />
         <EditText
             android:id="@+id/newIngdnt"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:inputType="textPersonName"
-            android:hint="Or, add new item"
-            android:layout_toRightOf="@id/floatingAddMoreButton" />
+            android:hint="Or, type new ingredient"
+            android:layout_toRightOf="@id/floatingAddMoreButton"
+            android:layout_alignParentBottom="true"
+            android:background="@android:color/transparent"
+            android:layout_marginLeft="12dip"
+            />
 
-        <Button
+        <android.support.design.widget.FloatingActionButton
             android:id="@+id/addBtn"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:enabled="false"
-            android:text="Add"
-            android:layout_toRightOf="@id/newIngdnt" />
+            android:layout_toRightOf="@id/newIngdnt"
+            app:srcCompat="@drawable/plus48"
+            android:visibility="invisible"
+            app:backgroundTint="@android:color/background_light"
+            app:fabSize="mini"
+
+            />
     </RelativeLayout>
 
 
@@ -113,16 +125,22 @@
 
         <ListView
             android:id="@+id/list_view"
-            android:layout_width="294dp"
-            android:layout_height="412dp"
-            tools:layout_conversion_absoluteHeight="238dp"
-            tools:layout_conversion_absoluteWidth="384dp"
-            tools:layout_conversion_absoluteX="0dp"
-            tools:layout_conversion_absoluteY="511dp"
-            tools:layout_editor_absoluteX="0dp"
-            tools:layout_editor_absoluteY="0dp" />
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+             />
     </RelativeLayout>
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/showMeRecipes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        app:backgroundTint="@android:color/background_light"
+        app:fabSize="mini"
 
+        android:src="@drawable/search50"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        />
 
     <!--<android.support.design.widget.FloatingActionButton-->
     <!--android:id="@+id/showMeRecipes"-->

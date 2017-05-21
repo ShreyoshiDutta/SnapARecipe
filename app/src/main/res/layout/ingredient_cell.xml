@@ -13,19 +13,13 @@
 
     <TextView
         android:id="@+id/ingredientName"
-        android:layout_width="190dp"
-        android:layout_height="59dp"
-        android:padding="10dip"
-        android:textSize="24dip"
-        android:textStyle="bold"
-        android:text="header"
-        android:layout_marginStart="18dp"
-        android:layout_marginEnd="12dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="12dip"
+        android:textSize="10pt"
+        android:text="header"/>
 
-        tools:layout_editor_absoluteY="0dp"
-        tools:layout_editor_absoluteX="0dp" />
-
-    <ImageView
+    <!--<ImageView
         android:id="@+id/recipeImage"
         android:layout_width="104dp"
         android:layout_height="100dp"
@@ -39,7 +33,7 @@
         app:layout_constraintTop_toTopOf="parent"
         android:contentDescription="test"
         android:layout_marginRight="34dp"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.0" />-->
 
 
 

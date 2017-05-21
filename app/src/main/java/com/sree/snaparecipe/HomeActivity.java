@@ -5,9 +5,14 @@ import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.provider.MediaStore;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -98,7 +103,7 @@ public class HomeActivity extends AppCompatActivity implements  View.OnClickList
     private void initData() {
         // URI is private to my app
         cc = this.getContentResolver().query(
-                MediaStore.Images.Media.INTERNAL_CONTENT_URI, null, null, null,
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI, null, MediaStore.Images.Media.DESCRIPTION + " LIKE ?", new String[]{ImageCapture.ImageFilePrefix},
                 null);
         Log.v(TAG,"number of images retrieved = "+cc.getCount());
 
@@ -116,6 +121,7 @@ public class HomeActivity extends AppCompatActivity implements  View.OnClickList
              * because app won't respond to UI gestures.
              */
             new Thread() {
+                @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
                 public void run() {
 
                         cc.moveToFirst();
@@ -128,22 +134,32 @@ public class HomeActivity extends AppCompatActivity implements  View.OnClickList
                                 mUrls[i] = Uri.parse(cc.getString(1));
                                 strUrls.add(cc.getString(1));
                                 mNames[i] = cc.getString(3);
-                                Log.e("initData : mNames[i]",mNames[i]+":"+cc.getColumnCount()+ " : " +cc.getString(3));
+                                Log.e("initData : mNames[i]",mNames[i]+":"+cc.getColumnCount()+ " : " +cc.getString(3)+ " : " + mUrls[i].toString());
                                 {
-                                    View view = mInflater.inflate(R.layout.activity_gallery_item,
+                                    final View view = mInflater.inflate(R.layout.activity_gallery_item,
                                             mGallery, false);
                                     ImageView img = (ImageView) view
                                             .findViewById(R.id.id_index_gallery_item_image);
                                     // reusing transition name to hold file path of the image
                                     img.setTransitionName(strUrls.get(i));
                                     // sets the file path for the image to be displayed
-                                    img.setImageURI(mUrls[i]);
+                                    //img.setImageURI(mUrls[i]);
+                                    final int THUMBSIZE = 64;
+                                    Bitmap thumbImage = ThumbnailUtils.extractThumbnail(BitmapFactory.decodeFile(mUrls[i].toString()),
+                                            THUMBSIZE, THUMBSIZE);
+                                    img.setImageBitmap(thumbImage);
                                     // on click a new intent is opened to show list of ingredients
                                     img.setOnClickListener(HomeActivity.this);
                                     TextView txt = (TextView) view
                                             .findViewById(R.id.id_index_gallery_item_text);
                                     txt.setText(mNames[i]);
-                                    mGallery.addView(view);
+                                    HomeActivity.this.runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            mGallery.addView(view);
+                                        }
+                                    });
+
 
                                 }
                             }catch (Exception e) {
@@ -159,6 +175,7 @@ public class HomeActivity extends AppCompatActivity implements  View.OnClickList
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onClick(View v) {
 

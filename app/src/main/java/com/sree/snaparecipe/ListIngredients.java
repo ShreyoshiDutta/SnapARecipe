@@ -3,8 +3,10 @@ package com.sree.snaparecipe;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
@@ -44,7 +46,7 @@ public class ListIngredients extends AppCompatActivity implements
     private ListView lv;
 
     private TextView numOfIngdnt;
-    private Button showMeRecipes;
+    private FloatingActionButton showMeRecipes;
 
 
     @Override
@@ -67,7 +69,7 @@ public class ListIngredients extends AppCompatActivity implements
         lv.setOnItemLongClickListener(this);
         lv.setOnItemClickListener(this);
 
-        showMeRecipes = (Button)findViewById(R.id.showMeRecipes);
+        showMeRecipes = (FloatingActionButton)findViewById(R.id.showMeRecipes);
         showMeRecipes.setEnabled(adapter.getCount()>0);
         //FloatingActionButton showMeRecipes = (FloatingActionButton)findViewById(R.id.showMeRecipes);
         showMeRecipes.setOnClickListener(new View.OnClickListener() {
@@ -82,12 +84,14 @@ public class ListIngredients extends AppCompatActivity implements
 
         });
 
-        final Button addIngdntBtn = (Button)findViewById(R.id.addBtn);
+        final FloatingActionButton addIngdntBtn = (FloatingActionButton)findViewById(R.id.addBtn);
+        addIngdntBtn.setVisibility(View.INVISIBLE);
         final EditText newIngdnt = (EditText)findViewById(R.id.newIngdnt);
         newIngdnt.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 addIngdntBtn.setEnabled(false);
+
             }
 
             @Override
@@ -97,9 +101,14 @@ public class ListIngredients extends AppCompatActivity implements
 
             @Override
             public void afterTextChanged(Editable s) {
+
                 addIngdntBtn.setEnabled(true);
+                addIngdntBtn.setVisibility(View.VISIBLE);
             }
         });
+
+
+
 
 
         addIngdntBtn.setOnClickListener(new View.OnClickListener() {
@@ -118,6 +127,7 @@ public class ListIngredients extends AppCompatActivity implements
                     newIngdnt.setText("");
                     Toast.makeText(getBaseContext(), i.name + " has been added", Toast.LENGTH_SHORT).show();
                     addIngdntBtn.setEnabled(false);
+                    addIngdntBtn.setVisibility(View.INVISIBLE);
                     View view = ListIngredients.this.getCurrentFocus();
                     if (view != null) {
 
@@ -143,16 +153,19 @@ public class ListIngredients extends AppCompatActivity implements
         });
     }
 
+
     @Override
     protected void onNewIntent(Intent intent){
         Log.d(TAG, "in onNewIntent");
-        List<Ingredient> newIngredientList = ((Ingredients)intent.getParcelableExtra("Ingredients")).getIngredients();
-        for(Ingredient i : retainWanted(newIngredientList)) {
-            adapter.insert(i,0);
-            Log.v(TAG,"added new ing: "+i);
-        }
+        if((Ingredients)intent.getParcelableExtra("Ingredients") !=null) {
+            List<Ingredient> newIngredientList = ((Ingredients) intent.getParcelableExtra("Ingredients")).getIngredients();
+            for (Ingredient i : retainWanted(newIngredientList)) {
+                adapter.insert(i, 0);
+                Log.v(TAG, "added new ing: " + i);
+            }
 
-        refreshListView();
+            refreshListView();
+        }
     }
 
 

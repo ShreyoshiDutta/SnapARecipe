@@ -27,6 +27,7 @@ import com.sree.snaparecipe.clarifai.ClarifaiDelegate;
 import com.sree.snaparecipe.model.clarifai.*;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -53,6 +54,7 @@ public class ImageCapture extends AppCompatActivity {
     private static final String TAG = "ImageCapture";
     private static final int MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 11;
     private boolean isStubbed=true;
+    public static String ImageFilePrefix="JPEG_SNAPARECIPE";
 
     // Save a file: path for use with ACTION_VIEW intents
     String mCurrentPhotoPath;
@@ -160,7 +162,7 @@ public class ImageCapture extends AppCompatActivity {
     private File createImageFile() throws IOException {
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_";
+        String imageFileName = ImageFilePrefix + timeStamp + "_";
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         File image = File.createTempFile(
                 imageFileName,  /* prefix */
@@ -253,9 +255,12 @@ public class ImageCapture extends AppCompatActivity {
 
         values.put(MediaStore.Images.Media.DATE_TAKEN, System.currentTimeMillis());
         values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
+        values.put(MediaStore.Images.Media.DESCRIPTION,ImageCapture.ImageFilePrefix);
         values.put(MediaStore.MediaColumns.DATA, mCurrentPhotoPath);
 
-        this.getContentResolver().insert(MediaStore.Images.Media.INTERNAL_CONTENT_URI, values);
+        this.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+
+
     }
 
     private void setPic() {
