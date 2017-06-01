@@ -64,6 +64,7 @@ public class ImageCapture extends AppCompatActivity {
     int targetW=200;
     int targetH=200;
 
+    //
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,6 +82,7 @@ public class ImageCapture extends AppCompatActivity {
             }
         }
 
+        //shows image (might not keep it anymore)
         mImageView = (ImageView) findViewById(R.id.imageView);
         ViewTreeObserver vto = mImageView.getViewTreeObserver();
         vto.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
@@ -96,16 +98,9 @@ public class ImageCapture extends AppCompatActivity {
 
     }
 
-   /* public void onWindowFocusChanged(boolean hasFocus) {
-        // TODO Auto-generated method stub
-        super.onWindowFocusChanged(hasFocus);
-        if (hasFocus) {
-            mImageView = (ImageView) findViewById(R.id.imageView);
-            Log.d(TAG, "width : " + mImageView.getWidth());
-        }
 
-    }*/
 
+   //on camera successfully capturing an image this method is called
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
@@ -113,25 +108,12 @@ public class ImageCapture extends AppCompatActivity {
 
         if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK) {
             setPic();
-            //galleryAddPic();
+
 
             writeToGallery();
 
-            /*final AsyncTask execute = new AsyncTask() {
 
-                @Override
-                protected Object doInBackground(Object[] params) {
-                    Cloudinary cloudinary = new Cloudinary("cloudinary://492815673726876:0IjSkNjIO0JwG1DbkmSHZx8qkws@dccxbk5g8");
-                    try {
-                        cloudinary.uploader().upload(mCurrentPhotoPath, ObjectUtils.asMap("public_id", "sample_remote"));
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                        Log.e(TAG,e.getMessage());
-                    }
-                    return null;
-                }
-            }.execute(new String[5]);*/
-
+//makes an asynchronous call clarifai API
             final AsyncTask executeClarifai = new AsyncTask() {
 
                 @Override
@@ -158,7 +140,7 @@ public class ImageCapture extends AppCompatActivity {
 
 
 
-
+//creates file to save images in gallery
     private File createImageFile() throws IOException {
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
