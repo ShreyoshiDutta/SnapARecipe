@@ -1,32 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
     android:background="@android:color/background_light"
-    tools:context="com.sree.snaparecipe.RecipeListActivity">
+    tools:context="com.sree.snaparecipe.RecipeListActivity"
+    android:layout_alignParentLeft="true"
+    android:layout_alignParentStart="true">
 
-    <android.support.design.widget.AppBarLayout
-        android:id="@+id/app_bar"
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/my_toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:elevation="4dp"
+        app:popupTheme="@style/AppTheme.PopupOverlay"/>
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
 
-    </android.support.design.widget.AppBarLayout>
-
+    <ProgressBar
+        android:id="@+id/progressBarListRecipes"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="30pt"
+        android:layout_height="30pt"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:elevation="100dp"
+        />
     <FrameLayout
         android:id="@+id/frameLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        android:layout_height="wrap_content"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:layout_below="@id/my_toolbar"
+        >
 
         <include layout="@layout/recipe_list" />
     </FrameLayout>
@@ -42,4 +52,4 @@
         app:fabSize="mini"/>-->
 
 
-</android.support.design.widget.CoordinatorLayout>
+</RelativeLayout>

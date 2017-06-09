@@ -7,18 +7,27 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.res.ResourcesCompat;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,7 +40,7 @@ import java.util.Iterator;
 import java.util.List;
 
 
-public class ListIngredients extends AppCompatActivity implements
+public class ListIngredients extends MyActivity implements
         AdapterView.OnItemLongClickListener , AdapterView.OnItemClickListener {
     private static final String TAG = "ListIngredients";
 
@@ -54,7 +63,13 @@ public class ListIngredients extends AppCompatActivity implements
         Log.v(TAG,"creting app listview");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_ingredients);
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        setSupportActionBar(myToolbar);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
 
+        }
 
         Intent caller = getIntent();
         //fetches the ingradients from the indent which came from HomeActivity
@@ -64,12 +79,16 @@ public class ListIngredients extends AppCompatActivity implements
         adapter = new ArrayAdapter(this,R.layout.ingredient_cell,R.id.ingredientName, acceptedIngredientList);
 
         lv = (ListView) findViewById(R.id.list_view);
+
         lv.setAdapter(adapter);
         lv.setTextFilterEnabled(true);
         lv.setOnItemLongClickListener(this);
         lv.setOnItemClickListener(this);
 
-        showMeRecipes = (FloatingActionButton)findViewById(R.id.showMeRecipes);
+        //showMeRecipes = (FloatingActionButton)findViewById(R.id.showMeRecipes);
+        showMeRecipes = getFab(this,lv);
+
+        lv.addFooterView(showMeRecipes);
         showMeRecipes.setEnabled(adapter.getCount()>0);
         //FloatingActionButton showMeRecipes = (FloatingActionButton)findViewById(R.id.showMeRecipes);
         showMeRecipes.setOnClickListener(new View.OnClickListener() {
@@ -153,6 +172,12 @@ public class ListIngredients extends AppCompatActivity implements
         });
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return true;
+    }
 
     @Override
     protected void onNewIntent(Intent intent){
@@ -219,5 +244,9 @@ public class ListIngredients extends AppCompatActivity implements
         numOfIngdnt.setText(String.valueOf(adapter.getCount()));
     }
 
+    public FloatingActionButton getFab(Context context, ViewGroup parent) {
+        LayoutInflater inflater = LayoutInflater.from(context);
+        return (FloatingActionButton) inflater.inflate(R.layout.showmerecipes, parent, false);
+    }
 
 }

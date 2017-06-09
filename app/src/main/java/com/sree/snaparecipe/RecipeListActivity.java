@@ -2,6 +2,7 @@ package com.sree.snaparecipe;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -15,10 +16,14 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Adapter;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 
@@ -45,12 +50,13 @@ import retrofit2.Response;
  * item details. On tablets, the activity presents the list of items and
  * item details side-by-side using two vertical panes.
  */
-public class RecipeListActivity extends AppCompatActivity implements Callback<List<Recipe_>> {
+public class RecipeListActivity extends MyActivity implements Callback<List<Recipe_>> {
     private static final String TAG = "RecipeListActivity";
     private boolean isStubbed=true;
     private SimpleItemRecyclerViewAdapter adapter;
 
     private Ingredients ingredients;
+    private ProgressBar spinner;
 
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
@@ -62,9 +68,18 @@ public class RecipeListActivity extends AppCompatActivity implements Callback<Li
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_list);
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        setSupportActionBar(myToolbar);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+
+        }
+
 
         setStubbedMode:{
-            try {
+            isStubbed = getSharedPreferences(PreferencesActivity.PREFS_NAME, 0).getBoolean(PreferencesActivity.STUBBED_MODE,true);
+            /*try {
                 ApplicationInfo ai = getPackageManager().getApplicationInfo(this.getPackageName(), PackageManager.GET_META_DATA);
                 Bundle bundle = ai.metaData;
                 isStubbed = bundle.getBoolean("isStubbed");
@@ -72,18 +87,13 @@ public class RecipeListActivity extends AppCompatActivity implements Callback<Li
                 Log.e(TAG, "Failed to load meta-data, NameNotFound: " + e.getMessage());
             } catch (NullPointerException e) {
                 Log.e(TAG, "Failed to load meta-data, NullPointer: " + e.getMessage());
-            }
+            }*/
         }
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        /*Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        toolbar.setTitle(getTitle());
+        toolbar.setTitle(getTitle());*/
 
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
-
-        }
 
 
        /* FloatingActionButton camera = (FloatingActionButton) findViewById(R.id.camera);
@@ -107,8 +117,18 @@ public class RecipeListActivity extends AppCompatActivity implements Callback<Li
             mTwoPane = true;
         }
 
+        spinner = (ProgressBar)findViewById(R.id.progressBarListRecipes);
+        spinner.setVisibility(View.VISIBLE);
 
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return true;
+    }
+
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
         intializeRecipes();
@@ -121,7 +141,7 @@ public class RecipeListActivity extends AppCompatActivity implements Callback<Li
         ingredients = getIntent().getParcelableExtra(ListIngredients.INTENT_PUT_INGREDIENTS);
         List<Recipe_> rtrn = new ArrayList<>();
 
-        Log.v(TAG,"Calling spponacular");
+        Log.v(TAG,"Calling spponacular in stubbed mode?"+isStubbed);
         //SpoonacularDelegate.requestRecipies(this,isStubbed);
         List<Ingredient> is = new ArrayList<>();
         if(ingredients==null || ingredients.getIngredients().size()==0) {
@@ -132,7 +152,8 @@ public class RecipeListActivity extends AppCompatActivity implements Callback<Li
         }else{
             is.addAll(ingredients.getIngredients());
         }
-        SpoonacularDelegate.requestRecipies(this,isStubbed, is,2);
+        SharedPreferences settings = getSharedPreferences(PreferencesActivity.PREFS_NAME, 0);
+        SpoonacularDelegate.requestRecipies(this,isStubbed, is,settings.getInt(PreferencesActivity.NUMBER_OF_RECIPES,3));
         //spoonacularService.listRandomRecipes(4,"lIQwnxhTt8mshrspQjiOj9uYDVs5p1K8otZjsncetRKjGas2oN").enqueue(this);
 
         return rtrn;
@@ -153,6 +174,8 @@ public class RecipeListActivity extends AppCompatActivity implements Callback<Li
         adapter.addAll(ms);
         adapter.notifyDataSetChanged();
 
+
+        spinner.setVisibility(View.INVISIBLE);
     }
 
     @Override

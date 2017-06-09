@@ -98,7 +98,7 @@ public class SpoonacularDelegate {
                     }).start();
             //callback.onResponse(null,Response.success(new Recipe(null)));
         }else{
-            spoonacularService.listRandomRecipes(4,"lIQwnxhTt8mshrspQjiOj9uYDVs5p1K8otZjsncetRKjGas2oN").enqueue(new Callback<Recipe>() {
+            spoonacularService.listRandomRecipes(10,"lIQwnxhTt8mshrspQjiOj9uYDVs5p1K8otZjsncetRKjGas2oN").enqueue(new Callback<Recipe>() {
                 @Override
                 public void onResponse(Call<Recipe> call, Response<Recipe> response) {
                     callback.onResponse(null,Response.success(response.body().getRecipes()));

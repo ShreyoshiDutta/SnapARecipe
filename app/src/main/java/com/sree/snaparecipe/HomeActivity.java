@@ -1,12 +1,15 @@
 package com.sree.snaparecipe;
 
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -14,15 +17,21 @@ import android.os.Build;
 import android.provider.MediaStore;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.Window;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.sree.snaparecipe.clarifai.ClarifaiDelegate;
@@ -31,10 +40,11 @@ import com.sree.snaparecipe.model.clarifai.Ingredients;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeActivity extends AppCompatActivity implements  View.OnClickListener{
+public class HomeActivity extends MyActivity implements  View.OnClickListener{
 
     // TAG is useful for labeling logs.
     private static final String TAG = "HomeActivity";
+    private static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 1;
 
 
     private LinearLayout mGallery;
@@ -48,6 +58,8 @@ public class HomeActivity extends AppCompatActivity implements  View.OnClickList
     private static final List<String> strUrls = new ArrayList<>();
     private String[] mNames = null;
     private boolean isStubbed=true;
+    private ProgressBar spinner;
+
 
 
     @Override
@@ -56,6 +68,11 @@ public class HomeActivity extends AppCompatActivity implements  View.OnClickList
         super.onCreate(savedInstanceState);
         // sets the layout resource
         setContentView(R.layout.activity_home);
+
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar_home);
+        setSupportActionBar(myToolbar);
+        ActionBar actionBar = getSupportActionBar();
+
         /* stubbed mode is used to minimise API usages which costs real money.
          * This mode is controlled by the meta-data named "isStubbed" in AndroidManifest.xml
          */
@@ -78,12 +95,17 @@ public class HomeActivity extends AppCompatActivity implements  View.OnClickList
             initData();
         }
 
+        spinner = (ProgressBar)findViewById(R.id.progressBar2);
+        spinner.setVisibility(View.INVISIBLE);
+
+
 
 
     }
 
     private void setStubbedMode() {
-        {
+        isStubbed = getSharedPreferences(PreferencesActivity.PREFS_NAME, 0).getBoolean(PreferencesActivity.STUBBED_MODE,true);
+        /*{
             try {
                 ApplicationInfo ai = getPackageManager().getApplicationInfo(this.getPackageName(), PackageManager.GET_META_DATA);
                 Bundle bundle = ai.metaData;
@@ -93,7 +115,7 @@ public class HomeActivity extends AppCompatActivity implements  View.OnClickList
             } catch (NullPointerException e) {
                 Log.e(TAG, "Failed to load meta-data, NullPointer: " + e.getMessage());
             }
-        }
+        }*/
     }
 
     /*
@@ -101,6 +123,7 @@ public class HomeActivity extends AppCompatActivity implements  View.OnClickList
     2. Adds each image to the horizontal scrollview/linear layout.
      */
     private void initData() {
+        requestPermission();
         // URI is private to my app
         cc = this.getContentResolver().query(
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI, null, MediaStore.Images.Media.DESCRIPTION + " LIKE ?", new String[]{ImageCapture.ImageFilePrefix},
@@ -134,8 +157,12 @@ public class HomeActivity extends AppCompatActivity implements  View.OnClickList
                                 mUrls[i] = Uri.parse(cc.getString(1));
                                 strUrls.add(cc.getString(1));
                                 mNames[i] = cc.getString(3);
-                                Log.e("initData : mNames[i]",mNames[i]+":"+cc.getColumnCount()+ " : " +cc.getString(3)+ " : " + mUrls[i].toString());
+                                Log.d("initData : mNames[i]",mNames[i]+":"+cc.getColumnCount()+ " : " +cc.getString(3)+ " : " + mUrls[i].toString());
                                 {
+                                    final int THUMBSIZE = 32;
+                                    Bitmap thumbImage = ThumbnailUtils.extractThumbnail(BitmapFactory.decodeFile(mUrls[i].toString()),
+                                            THUMBSIZE, THUMBSIZE);
+                                    Log.d(TAG,Integer.toString(thumbImage.getByteCount()));
                                     final View view = mInflater.inflate(R.layout.activity_gallery_item,
                                             mGallery, false);
                                     ImageView img = (ImageView) view
@@ -144,10 +171,9 @@ public class HomeActivity extends AppCompatActivity implements  View.OnClickList
                                     img.setTransitionName(strUrls.get(i));
                                     // sets the file path for the image to be displayed
                                     //img.setImageURI(mUrls[i]);
-                                    final int THUMBSIZE = 64;
-                                    Bitmap thumbImage = ThumbnailUtils.extractThumbnail(BitmapFactory.decodeFile(mUrls[i].toString()),
-                                            THUMBSIZE, THUMBSIZE);
+
                                     img.setImageBitmap(thumbImage);
+                                    img.setBackgroundResource(R.drawable.img_background_border);
                                     // on click a new intent is opened to show list of ingredients
                                     img.setOnClickListener(HomeActivity.this);
                                     TextView txt = (TextView) view
@@ -174,10 +200,40 @@ public class HomeActivity extends AppCompatActivity implements  View.OnClickList
         }
     }
 
+    private void requestPermission() {
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.READ_CONTACTS)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.READ_EXTERNAL_STORAGE)) {
+
+                // Show an explanation to the user *asynchronously* -- don't block
+                // this thread waiting for the user's response! After the user
+                // sees the explanation, try again to request the permission.
+
+            } else {
+
+                // No explanation needed, we can request the permission.
+
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                        MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
+
+                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
+                // app-defined int constant. The callback method gets the
+                // result of the request.
+            }
+        }
+    }
+
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onClick(View v) {
+                // Starts spinner
+                spinner.setVisibility(View.VISIBLE);
 
                 // This will always be a ImageView as we are setting this up while loading the galley.
                 ImageView iv = (ImageView)v;
@@ -195,11 +251,20 @@ public class HomeActivity extends AppCompatActivity implements  View.OnClickList
                         showIngredientView.putExtra("Ingredients",detectedIngredients);
                         startActivity(showIngredientView);
 
-                        Log.v(TAG,"started List Ingredeitnt activity");
+                        Log.v(TAG,"started List Ingredeitnt activity in stubbed mode?"+isStubbed);
                         return null;
                     }
                 }.execute(new String[5]);
     }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu1, menu);
+        return true;
+    }
+
 
 
 }

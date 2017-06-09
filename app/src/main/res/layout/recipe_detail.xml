@@ -1,28 +1,44 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:layout_width="wrap_content"
     android:background="@android:color/background_light"
-    >
+    android:id="@+id/recipe_detail_container">
 
-    <include layout="@layout/detailedrecipelabels" />
+
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/recipe_detail_labels"
+        >
+    <include layout="@layout/detailedrecipelabels"     />
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/detailedRecipeImg"
+        android:layout_width="match_parent"
+        android:layout_height="100pt"
+
+        android:layout_below="@id/recipe_detail_labels"/>
+
+    <ProgressBar
+        android:id="@+id/spinner_recipe_detail"
+        android:layout_width="match_parent"
+        android:layout_height="100pt"
+        android:layout_below="@id/recipe_detail_labels"/>
 
     <TextView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/recipe_detail"
-    style="?android:attr/textAppearanceLarge"
+
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
     android:textIsSelectable="true"
-        android:layout_below="@id/detailedRecipeLabels"
+        android:layout_below="@id/detailedRecipeImg"
     tools:context="com.sree.snaparecipe.RecipeDetailFragment" />
 
-    <ImageView
-        android:id="@+id/detailedRecipeImg"
-        android:layout_width="100pt"
-        android:layout_height="100pt"
-        app:srcCompat="@drawable/default_recipe"
-        android:layout_below="@id/recipe_detail"/>
+
 
 </RelativeLayout>

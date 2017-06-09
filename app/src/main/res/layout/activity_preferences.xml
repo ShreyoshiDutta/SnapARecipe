@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.sree.snaparecipe.PreferencesActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/my_toolbar_pref"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:elevation="4dp"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+
+<TextView
+    android:id="@+id/hintPref"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Stub mode"
+    android:layout_below="@+id/my_toolbar_pref"/>
+    <ToggleButton
+        android:id="@+id/stubMode"
+        android:layout_width="70pt"
+        android:layout_height="40pt"
+        android:text="Stub mode"
+        android:hint="Stub mode"
+        android:layout_toRightOf="@+id/hintPref"
+        android:layout_below="@+id/my_toolbar_pref"/>
+
+    <EditText
+        android:id="@+id/numberOfRecipes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="number"
+        android:layout_below="@id/stubMode"
+        android:hint="number of recipes to display"/>
+</RelativeLayout>
