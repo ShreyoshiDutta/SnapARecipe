@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.View;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -17,6 +19,7 @@ public class PreferencesActivity extends AppCompatActivity {
     public static final String NUMBER_OF_RECIPES = "NUMBER_OF_RECIPES";
     public static final String STUBBED_MODE = "STUBBED_MODE";
     public static final String TAG = "PreferencesActivity";
+    public static final boolean STUBBED_MODE_VALUE = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +34,7 @@ public class PreferencesActivity extends AppCompatActivity {
         final SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
         final SharedPreferences.Editor editor = settings.edit();
 
-        EditText numOfRecipes = (EditText) findViewById(R.id.numberOfRecipes);
+        final EditText numOfRecipes = (EditText) findViewById(R.id.numberOfRecipes);
         numOfRecipes.setText(String.valueOf(settings.getInt(NUMBER_OF_RECIPES,3)));
         numOfRecipes.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -48,7 +51,7 @@ public class PreferencesActivity extends AppCompatActivity {
         });
 
 
-        ToggleButton toggle = (ToggleButton) findViewById(R.id.stubMode);
+        /*ToggleButton toggle = (ToggleButton) findViewById(R.id.stubMode);
         toggle.setChecked(settings.getBoolean(STUBBED_MODE,true));
 
         toggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -60,6 +63,20 @@ public class PreferencesActivity extends AppCompatActivity {
                     editor.putBoolean(STUBBED_MODE, false);
                 }
                 editor.commit();
+            }
+        });*/
+
+        Button save = (Button) findViewById(R.id.savePref);
+        save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG,numOfRecipes.getText().toString());
+                Integer.parseInt(numOfRecipes.getText().toString());
+                // Restore preferences
+
+                editor.putInt(NUMBER_OF_RECIPES, Integer.parseInt(numOfRecipes.getText().toString()));
+                editor.commit();
+                onSupportNavigateUp();
             }
         });
 

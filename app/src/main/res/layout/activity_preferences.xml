@@ -14,11 +14,15 @@
         android:elevation="4dp"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
 
-<TextView
+<!--<TextView
     android:id="@+id/hintPref"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="Stub mode"
+    android:layout_width="70pt"
+    android:layout_height="40pt"
+    android:text="Internet off?"
+    android:layout_centerVertical="true"
+    android:elegantTextHeight="true"
+    android:textAlignment="center"
+    android:textSize="12pt"
     android:layout_below="@+id/my_toolbar_pref"/>
     <ToggleButton
         android:id="@+id/stubMode"
@@ -26,15 +30,34 @@
         android:layout_height="40pt"
         android:text="Stub mode"
         android:hint="Stub mode"
-        android:layout_toRightOf="@+id/hintPref"
-        android:layout_below="@+id/my_toolbar_pref"/>
 
+        android:layout_below="@+id/my_toolbar_pref"
+        android:layout_alignParentRight="true"/>-->
+    <TextView
+        android:id="@+id/hintNumRecipes"
+        android:layout_width="70pt"
+        android:layout_height="40pt"
+        android:text="Number of recipes"
+        android:layout_below="@+id/my_toolbar_pref"
+        android:elegantTextHeight="true"
+        android:textSize="12pt"
+        android:textAlignment="center"/>
     <EditText
         android:id="@+id/numberOfRecipes"
+        android:layout_width="70pt"
+        android:layout_height="40pt"
+
+        android:inputType="number"
+        android:layout_below="@id/my_toolbar_pref"
+        android:layout_alignParentRight="true"
+        android:hint=""/>
+
+    <Button
+        android:id="@+id/savePref"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="number"
-        android:layout_below="@id/stubMode"
-        android:hint="number of recipes to display"/>
+        android:layout_below="@id/numberOfRecipes"
+        android:layout_alignParentRight="true"
+
+        android:text="Save" />
 </RelativeLayout>

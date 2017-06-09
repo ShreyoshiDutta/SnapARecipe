@@ -12,13 +12,17 @@
         android:elevation="4dp"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
 
-    <EditText
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <TextView
         android:id="@+id/editText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+
+        android:layout_margin="10pt"
         android:ems="10"
         android:inputType="textMultiLine"
-        android:text="This is the help
-1. point A
-2. Point B"/>
+        />
+    </ScrollView>
 </LinearLayout>

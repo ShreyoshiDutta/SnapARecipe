@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -68,10 +69,8 @@ public class RecipeDetailFragment extends Fragment {
             mItem = (Recipe_) (getArguments().getParcelable(ARG_ITEM_ID));
 
             Activity activity = this.getActivity();
-            /*CollapsingToolbarLayout appBarLayout = (CollapsingToolbarLayout) activity.findViewById(R.id.toolbar_layout);
-            if (appBarLayout != null) {
-                appBarLayout.setTitle(mItem.getTitle());
-            }*/
+
+
         }
         Log.d(ARG_ITEM_ID,mItem.toString());
     }
@@ -84,6 +83,12 @@ public class RecipeDetailFragment extends Fragment {
         ((AppCompatActivity)getActivity()).setSupportActionBar(mToolbar);*/
 
 
+        ScrollView scv = ((ScrollView)container);
+
+        /*container.setFocusableInTouchMode(true);
+        ((ScrollView)container).setDescendantFocusability(ViewGroup.FOCUS_BEFORE_DESCENDANTS);
+*/
+
         // Show the dummy content as text in a TextView.
         if (mItem != null) {
             ((TextView) rootView.findViewById(R.id.recipe_detail)).setText(mItem.getInstructions());
@@ -95,7 +100,7 @@ public class RecipeDetailFragment extends Fragment {
             new RetrieveRecipeImage().execute(mItem.getImage());
 
             ((TextView) rootView.findViewById(R.id.timetocook)).setText(mItem.getReadyInMinutes()+" mins");
-            ((TextView) rootView.findViewById(R.id.healthScore)).setText(mItem.getWeightWatcherSmartPoints()+"/100");
+            ((TextView) rootView.findViewById(R.id.healthScore)).setText(Integer.toString(mItem.getWeightWatcherSmartPoints()));
 
 
             ((ImageView) rootView.findViewById(R.id.imageHealthy)).setVisibility(mItem.getVeryHealthy()?View.VISIBLE:View.INVISIBLE);
@@ -110,6 +115,8 @@ public class RecipeDetailFragment extends Fragment {
 
         }
         Log.d(ARG_ITEM_ID,mItem.toString());
+
+        scv.pageScroll(View.FOCUS_DOWN);
 
         return rootView;
     }

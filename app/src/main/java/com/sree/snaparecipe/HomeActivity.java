@@ -104,18 +104,7 @@ public class HomeActivity extends MyActivity implements  View.OnClickListener{
     }
 
     private void setStubbedMode() {
-        isStubbed = getSharedPreferences(PreferencesActivity.PREFS_NAME, 0).getBoolean(PreferencesActivity.STUBBED_MODE,true);
-        /*{
-            try {
-                ApplicationInfo ai = getPackageManager().getApplicationInfo(this.getPackageName(), PackageManager.GET_META_DATA);
-                Bundle bundle = ai.metaData;
-                isStubbed = bundle.getBoolean("isStubbed");
-            } catch (PackageManager.NameNotFoundException e) {
-                Log.e(TAG, "Failed to load meta-data, NameNotFound: " + e.getMessage());
-            } catch (NullPointerException e) {
-                Log.e(TAG, "Failed to load meta-data, NullPointer: " + e.getMessage());
-            }
-        }*/
+        isStubbed = getSharedPreferences(PreferencesActivity.PREFS_NAME, 0).getBoolean(PreferencesActivity.STUBBED_MODE,PreferencesActivity.STUBBED_MODE_VALUE);
     }
 
     /*
@@ -159,7 +148,7 @@ public class HomeActivity extends MyActivity implements  View.OnClickListener{
                                 mNames[i] = cc.getString(3);
                                 Log.d("initData : mNames[i]",mNames[i]+":"+cc.getColumnCount()+ " : " +cc.getString(3)+ " : " + mUrls[i].toString());
                                 {
-                                    final int THUMBSIZE = 32;
+                                    final int THUMBSIZE = 128;
                                     Bitmap thumbImage = ThumbnailUtils.extractThumbnail(BitmapFactory.decodeFile(mUrls[i].toString()),
                                             THUMBSIZE, THUMBSIZE);
                                     Log.d(TAG,Integer.toString(thumbImage.getByteCount()));

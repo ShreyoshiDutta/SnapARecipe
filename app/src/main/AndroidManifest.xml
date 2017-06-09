@@ -29,7 +29,8 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.sree.snaparecipe.HomeActivity" />
         </activity>
-        <activity android:name=".RecipeListActivity">
+        <activity android:name=".RecipeListActivity"
+            android:launchMode="singleTop">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.sree.snaparecipe.ListIngredients" />
@@ -39,9 +40,7 @@
             android:label="@string/title_recipe_detail"
             android:parentActivityName=".RecipeListActivity"
             android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.sree.snaparecipe.RecipeListActivity" />
+
         </activity>
 
         <provider

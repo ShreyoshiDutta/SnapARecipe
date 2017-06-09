@@ -14,7 +14,12 @@
         android:elevation="4dp"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
 
-
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+<RelativeLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
     <ProgressBar
         android:id="@+id/progressBar2"
         style="?android:attr/progressBarStyle"
@@ -115,5 +120,6 @@
             android:src="@drawable/rightarrow"
             android:layout_marginTop="30dp"/>
     </LinearLayout>
-
+</RelativeLayout>
+    </ScrollView>
 </RelativeLayout>

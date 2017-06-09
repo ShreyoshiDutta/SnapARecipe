@@ -4,6 +4,8 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
+import android.widget.TextView;
 
 public class HelpActivity extends AppCompatActivity {
 
@@ -15,6 +17,9 @@ public class HelpActivity extends AppCompatActivity {
         myToolbar.setTitle("Help");
         setSupportActionBar(myToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        TextView foo = (TextView) findViewById(R.id.editText);
+        foo.setText(Html.fromHtml(getString(R.string.help)));
     }
 
     @Override

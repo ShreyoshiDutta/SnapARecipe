@@ -87,7 +87,6 @@ public class ListIngredients extends MyActivity implements
 
         //showMeRecipes = (FloatingActionButton)findViewById(R.id.showMeRecipes);
         showMeRecipes = getFab(this,lv);
-
         lv.addFooterView(showMeRecipes);
         showMeRecipes.setEnabled(adapter.getCount()>0);
         //FloatingActionButton showMeRecipes = (FloatingActionButton)findViewById(R.id.showMeRecipes);

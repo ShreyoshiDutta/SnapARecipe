@@ -36,6 +36,7 @@ import com.sree.snaparecipe.spoonacular.SpoonacularDelegate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 import retrofit2.Call;
@@ -78,32 +79,10 @@ public class RecipeListActivity extends MyActivity implements Callback<List<Reci
 
 
         setStubbedMode:{
-            isStubbed = getSharedPreferences(PreferencesActivity.PREFS_NAME, 0).getBoolean(PreferencesActivity.STUBBED_MODE,true);
-            /*try {
-                ApplicationInfo ai = getPackageManager().getApplicationInfo(this.getPackageName(), PackageManager.GET_META_DATA);
-                Bundle bundle = ai.metaData;
-                isStubbed = bundle.getBoolean("isStubbed");
-            } catch (PackageManager.NameNotFoundException e) {
-                Log.e(TAG, "Failed to load meta-data, NameNotFound: " + e.getMessage());
-            } catch (NullPointerException e) {
-                Log.e(TAG, "Failed to load meta-data, NullPointer: " + e.getMessage());
-            }*/
-        }
-
-        /*Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        toolbar.setTitle(getTitle());*/
-
-
-
-       /* FloatingActionButton camera = (FloatingActionButton) findViewById(R.id.camera);
-        camera.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //The action is to start a new intent called "ImageCapture"
-                startActivity(new Intent(RecipeListActivity.this,ImageCapture.class));
+            isStubbed = getSharedPreferences(PreferencesActivity.PREFS_NAME, 0).getBoolean(PreferencesActivity.STUBBED_MODE,PreferencesActivity.STUBBED_MODE_VALUE);
             }
-        });*/
+
+
 
         View recyclerView = findViewById(R.id.recipe_list);
         assert recyclerView != null;
@@ -142,7 +121,7 @@ public class RecipeListActivity extends MyActivity implements Callback<List<Reci
         List<Recipe_> rtrn = new ArrayList<>();
 
         Log.v(TAG,"Calling spponacular in stubbed mode?"+isStubbed);
-        //SpoonacularDelegate.requestRecipies(this,isStubbed);
+
         List<Ingredient> is = new ArrayList<>();
         if(ingredients==null || ingredients.getIngredients().size()==0) {
             is.add(new Ingredient("Carrot", .98f));
@@ -154,7 +133,7 @@ public class RecipeListActivity extends MyActivity implements Callback<List<Reci
         }
         SharedPreferences settings = getSharedPreferences(PreferencesActivity.PREFS_NAME, 0);
         SpoonacularDelegate.requestRecipies(this,isStubbed, is,settings.getInt(PreferencesActivity.NUMBER_OF_RECIPES,3));
-        //spoonacularService.listRandomRecipes(4,"lIQwnxhTt8mshrspQjiOj9uYDVs5p1K8otZjsncetRKjGas2oN").enqueue(this);
+
 
         return rtrn;
     }
@@ -167,6 +146,14 @@ public class RecipeListActivity extends MyActivity implements Callback<List<Reci
         for(Recipe_ m : ms){
             Log.v(TAG,m.toString());
         }
+        Iterator<Recipe_> itr = ms.iterator();
+        while (itr.hasNext()){
+            Recipe_ r = itr.next();
+            if(r.getInstructions()==null || r.getInstructions().isEmpty()) {
+                itr.remove();
+            }
+        }
+
 
 
         //ms.getRecipes().get(0).writeToParcel(new Parcel());
@@ -250,7 +237,7 @@ public class RecipeListActivity extends MyActivity implements Callback<List<Reci
             });
 
             ((TextView) holder.mView.findViewById(R.id.timetocook)).setText(currentRecipe.getReadyInMinutes()+" mins");
-            ((TextView) holder.mView.findViewById(R.id.healthScore)).setText(currentRecipe.getWeightWatcherSmartPoints()+"/100");
+            ((TextView) holder.mView.findViewById(R.id.healthScore)).setText(Integer.toString(currentRecipe.getWeightWatcherSmartPoints()));
 
             ((ImageView) holder.mView.findViewById(R.id.imageHealthy)).setVisibility(currentRecipe.getVeryHealthy()?View.VISIBLE:View.INVISIBLE);
             ((ImageView) holder.mView.findViewById(R.id.imagePopular)).setVisibility(currentRecipe.getVeryPopular()?View.VISIBLE:View.INVISIBLE);

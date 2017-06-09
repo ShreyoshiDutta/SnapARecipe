@@ -79,7 +79,7 @@
         android:layout_height="30pt"
         android:id="@+id/relativeLayout"
         android:layout_below="@+id/relativeLayout2"
-        android:layout_marginTop="5pt"
+        android:layout_marginTop="10pt"
         >
 
         <android.support.design.widget.FloatingActionButton

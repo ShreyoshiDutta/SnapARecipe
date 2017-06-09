@@ -17,6 +17,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.sree.snaparecipe.model.Recipe_;
@@ -41,28 +42,11 @@ public class RecipeDetailActivity extends MyActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar3);
         setSupportActionBar(toolbar);
 
-        /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own detail action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });*/
 
         mItem = (Recipe_) getIntent().getExtras().getParcelable(RecipeDetailFragment.ARG_ITEM_ID);
         Log.d(TAG,mItem.getClass().getCanonicalName()+": "+mItem.getTitle());
 
-       /* {
-            View nsv = findViewById(R.id.recipe_detail_container);
-            View rootView = getLayoutInflater().inflate(R.layout.recipe_detail,(ViewGroup) nsv);
 
-            // Show the dummy content as text in a TextView.
-            if (mItem != null) {
-                ((TextView) findViewById(R.id.recipe_detail)).setText(mItem.getInstructions());
-            }
-            ((ViewGroup) nsv).addView(rootView);
-        }*/
         // Show the Up button in the action bar.
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
@@ -90,6 +74,9 @@ public class RecipeDetailActivity extends MyActivity {
                     .add(R.id.recipe_detail_container, fragment)
                     .commit();
         }
+
+        ScrollView scv = (ScrollView)this.findViewById(R.id.recipe_detail_container);
+        scv.pageScroll(View.FOCUS_UP);
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -99,33 +86,5 @@ public class RecipeDetailActivity extends MyActivity {
     }
 
 
-/*    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == android.R.id.home) {
-            // This ID represents the Home or Up button. In the case of this
-            // activity, the Up button is shown. Use NavUtils to allow users
-            // to navigate up one level in the application structure. For
-            // more details, see the Navigation pattern on Android Design:
-            //
-            // http://developer.android.com/design/patterns/navigation.html#up-vs-back
-            //
-            NavUtils.navigateUpTo(this, new Intent(this, RecipeListActivity.class));
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }*/
 
-    /*@Override
-    public View onCreateView(String name, Context context, AttributeSet attrs) {
-        View nsv = findViewById(R.id.recipe_detail_container);
-        View rootView = getLayoutInflater().inflate(R.layout.recipe_detail,(ViewGroup) nsv);
-
-        // Show the dummy content as text in a TextView.
-        if (mItem != null) {
-            ((TextView) rootView.findViewById(R.id.recipe_detail)).setText(mItem.getInstructions());
-        }
-
-        return rootView;
-    }*/
 }
